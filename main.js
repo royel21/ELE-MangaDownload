@@ -79,14 +79,6 @@ app.on('close', () => {
 //Create the window when electron is ready
 app.on('ready', createWin);
 
-if (!fs.existsSync('./covers')) {
-    fs.mkdirSync('./covers');
-}
-
-if (!fs.existsSync('./data')) {
-    fs.mkdirSync('./data');
-}
-
 app.setPath('userData', path.join(os.homedir(), '.MangaDownloader'));
 
 var dbPath = path.join(os.homedir(),'./.mangas-common/');

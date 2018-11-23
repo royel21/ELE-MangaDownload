@@ -31,6 +31,9 @@ module.exports = class Downloads {
         }
         this.CreateDownload();
     }
+    handleOffline(state) {
+        for(var d of this.runningDownload) d.pause = !state;
+    }
 
     CreateDownload() {
         for (let dw of this.store.getPendding()) {

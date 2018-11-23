@@ -47,14 +47,14 @@ module.exports = class Download {
         };
 
         this.downloadid = setInterval(() => {
-
             if (this.pause) return;
             if (this.stop) clearInterval(this.downloadid);
             if (downloads.length > 0 && dthis.dcount < 3) {
 
                 new Promise((resolve, reject) => {
+
                     var d = downloads.shift();
-                    http.request(d.url, function (response) {
+                    var req = http.request(d.url, function (response) {
                         if (response.statusCode === 404) {
                             d.url = d.url.slice(0, -3) + "png"
                             downloads.unshift(d);
@@ -73,7 +73,20 @@ module.exports = class Download {
                                     dthis.data.pages - downloads.length, dthis.data);
                             dthis.dcount--;
                         });
-                    }).end();
+                    });
+
+                    req.on('socket', function (socket) {
+                        socket.setTimeout(20000);
+                        socket.on('timeout', function () {
+                            req.abort();
+                        });
+                    });
+
+                    req.on('error', function (err) {
+                        downloads.unshift(d);
+                        dthis.dcount--;
+                    });
+                    req.end();
                 });
                 dthis.dcount++;
             }

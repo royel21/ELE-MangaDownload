@@ -150,3 +150,17 @@ popupShow = (event) => {
 $('body').on('mouseenter', '.popup-msg', popupShow);
 
 $('body').on('mouseleave', '.popup-msg', popupHide);
+
+updateOnlineStatus = () =>{
+    $('#online-status').css({color: navigator.onLine ? "#007bff"  : 'red'});
+    if(navigator.onLine)
+    {
+        $('#online-status').removeClass("offline");
+    }else{
+        $('#online-status').addClass("offline");
+    }
+    DManager.handleOffline(navigator.onLine);
+}
+
+window.addEventListener('online',  updateOnlineStatus)
+window.addEventListener('offline',  updateOnlineStatus)

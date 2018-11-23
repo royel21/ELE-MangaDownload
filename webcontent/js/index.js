@@ -33,7 +33,7 @@ $('#d-m-clip').change((e) => {
     if (e.target.checked) {
         monitorId = setInterval(() => {
             var clip = clipboard.readText();
-            if (clip.indexOf('https://nhentai') > -1 && lastDownload != clip) {
+            if (clip.indexOf('https://nhentai') > -1 && lastDownload != clip && navigator.onLine) {
                 lastDownload = clip;
                 DManager.addDownload(clip);
             }
@@ -103,4 +103,6 @@ $(() => {
             dirId = folder[0].Id;
         })
     });
+    updateOnlineStatus();
+    
 });

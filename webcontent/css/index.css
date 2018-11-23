@@ -18,8 +18,8 @@ body, html {
 }
 
 body {
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;
+    user-select: none;
+    touch-action: none;
 }
 
 .main-container {
@@ -156,6 +156,7 @@ tbody tr td:nth-child(2) {
     white-space: nowrap;
     overflow: hidden;
     max-width: 250px;
+    user-select: text;
 }
 tbody tr td:nth-child(3),
 tbody tr td:nth-child(4),
@@ -285,96 +286,29 @@ footer span {
     color: burlywood;
 }
 
-/****************************Check-box******************************/
-
-.check-row {
-    position: relative;
-    width: 40px;
-    height: 40px;
-}
-
-.check-row:after {
-    content: " ";
-    display: inline-block;
-    min-width: 20px;
-    min-height: 20px;
-    background: #ddd;
-    border-radius: 100%;
-    position: absolute;
-    top: -15px;
-    left: 15px;
-    cursor: pointer;
-}
-
-.check-row input[type=checkbox] {
-    display: none;
-}
-
-.check-row label {
-    display: inline-block;
-    height: 45px;
-    width: 50px;
-    cursor: pointer;
-    margin: 0;
-}
-
-.check-row label:after {
-    content: " ";
-    display: block;
-    min-width: 15px;
-    min-height: 15px;
-    border-radius: 100px;
-    transition: all .3s ease;
-    position: absolute;
-    top: -12px;
-    left: 17.5px;
-    z-index: 1;
-    background: #333;
-    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.5);
-    transition: all .15s ease;
-}
-
-.check-top:after {
-    top: -12px;
-    left: 17.5px;
-}
-
-.check-top label:after {
-    top: -12px;
-    left: 17.5px;
-}
-
-.check-row input[type=checkbox]:checked+label:after {
-    background: #2623cc;
-}
-
-.check-top input[type=checkbox]:checked+label:after {
-    background: #26ca28;
-}
-
 /****************************************************/
 
-#always-top, #always-top label, #always-top span {
+.round-check, .round-check label, .round-check span {
     padding: 0;
     margin: 0;
 }
 
-#always-top label, #always-top input {
+.round-check label, .round-check input {
     display: none;
 }
 
-#always-top label {
+.round-check label {
     position: relative;
     display: flex;
     height: 30px;
-    width: 90px;
+    width: 75px;
     flex-basis: auto;
     align-items: center;
     justify-content: center;
     cursor: pointer;
 }
 
-#always-top label:after {
+.round-check label:after {
     content: " ";
     display: block;
     position: absolute;
@@ -388,12 +322,12 @@ footer span {
     transition: all .15s ease;
 }
 
-#always-top span {
+.round-check span {
     position: absolute;
     left: 32px;
 }
 
-#always-top .check-top {
+.round-check .check-top {
     display: inline-block;
     position: absolute;
     height: 21px;
@@ -403,14 +337,24 @@ footer span {
     left: -1px;
 }
 
-#always-top input[type=checkbox] {
+.round-check input[type=checkbox] {
     display: none;
 }
 
-#always-top input[type=checkbox]:checked+label:after {
+.round-check input[type=checkbox]:checked+label:after {
     background: #26ca28;
 }
-
+#download .round-check label{
+    width: 44px;
+    left: 0px;
+    height: 45px;
+}
+#download .round-check label:after{
+    left: 12.5px;
+}
+#download .round-check span {
+    left: 10.5px;
+}
 /*******************row check******************/
 
 tbody tr td:first-child {
@@ -654,4 +598,33 @@ tbody tr td:first-child {
 #popup.top:after{
     top: auto;
     bottom: -6px
+}
+
+#online-status{
+    position: absolute;
+    left: calc(100%/2);
+    font-size: 25px;
+    color: #007bff;
+    display: inline-block;
+    background-color: white;
+    border-radius: 100%;
+    height: 35px;
+    width: 35px;
+    top: 3px;
+}
+#online-status .fa-plug{
+    position: absolute;
+    left: 8px;
+    top: 7px;
+}
+.offline:after{
+    position: absolute;
+    top: 15px;
+    left: 0px;
+    display: inline-block;
+    content: " ";
+    height: 4px;
+    width: 100%;
+    background-color: red;
+    transform: rotatez(45deg);
 }

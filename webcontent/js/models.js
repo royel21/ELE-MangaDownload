@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const os = require('os');
 
-var dbPath = path.join(os.homedir(),'./.mangas-common/mangas.db');
+var dbPath = path.join(os.homedir(),'./.mangas-common/mangas2.db');
 
 const Op = Sequelize.Op;
 const db = new Sequelize('sqlite:./'+dbPath, {
