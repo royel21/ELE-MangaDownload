@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<script>
+    const path = require('path');
+    const BrowserWindow = require('electron').remote.BrowserWindow
+    const ipc = require('electron').ipcRenderer
+    var zipper = require('zip-local');
+    const fs = require('fs-extra');
+    ipc.on('zip-file', (e, data, id) => {
+        var fromWindow = BrowserWindow.fromId(id);
+        if (!fs.existsSync(data.dir + '.zip')) {
+            fromWindow.webContents.send('zip-zipping', data);
+            zip(data, fromWindow)
+        } else {
+            fromWindow.webContents.send('zip-done', data);
+            window.close();
+        }
+    });
+
+    zip = async (data, fromWindow) => {
+        zipper.sync.zip(data.dir).compress().save(data.dir + '.zip');
+        fs.removeSync(data.dir);
+        fromWindow.webContents.send('zip-done', data);
+        window.close();
+    }
+</script>
+
+</html>

@@ -1,0 +1,526 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+label {
+    margin: 0;
+}
+
+body, html {
+    background: rgba(0, 0, 0, 0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+}
+
+body {
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.main-container {
+    background-color: #14243d;
+    background: radial-gradient(ellipse at center, #14243d 0%, #030611 100%);
+    min-height: 100%;
+    border-radius: 1.1em;
+}
+
+#content {
+    min-height: 100%;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+.d-controls {
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background-color: #14243d;
+    border-radius: 1.1em 1.1em 0 0;
+}
+
+.d-controls label, .d-controls span {
+    display: inline-block;
+    width: 40px;
+    padding: 3.5px 10px;
+    font-size: 1.5rem;
+    -webkit-app-region: no-drag;
+    z-index: 99;
+}
+
+#drag-region {
+    flex-grow: 1;
+    -webkit-app-region: drag;
+    margin-top: 5px;
+}
+
+#d-control {
+    flex-shrink: 1;
+}
+
+#win-control {
+    flex-shrink: 1;
+}
+
+#btn-sys-min:hover, #btn-sys-max:hover, .btn-sys-close:hover {
+    cursor: pointer;
+    background-color: rgba(53, 237, 243, 0.2);
+}
+
+.btn-sys-close {
+    border-radius: 0 0.6em 0 0;
+}
+
+.btn-sys-close:hover {
+    background-color: red;
+}
+#file-list-hide i:active,
+#scan-list-show .fa-clipboard:active,
+#file-list-show i:active,
+.d-controls i:active, 
+.d-controls i:active, #d-delete:active, 
+#modal-scan-folder span i:active {
+    transform: translateY(5px)
+}
+
+#d-delete:hover, 
+#scan-list-show .fa-clipboard:hover, 
+#file-list-show i:hover,
+#file-list-hide i:hover,
+#modal-body span i:hover, 
+.d-controls span:hover, 
+#modal-body span i:hover, 
+.fa-trash-alt:hover {
+    text-shadow: 0 0 5px #fff;
+    cursor: pointer;
+}
+
+#table-container {
+    border-radius: 1em;
+    min-width: 670px;
+    margin: 35px auto;
+}
+
+table {
+    border-collapse: separate;
+}
+
+#check {
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+#check label {
+    margin: 0;
+    cursor: pointer;
+}
+
+thead {
+    background-color: #bbb;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #d6d6d6), color-stop(0.4, #c0c0c0), color-stop(1, #a4a4a4));
+    border-radius: 1em 1em 1em 1em;
+}
+
+thead tr td {
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0.5em 0.5em;
+    color: #444;
+    text-shadow: #f7f7f7 0 1px 1px;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #888;
+}
+
+tbody {
+    text-align: left;
+}
+
+tbody tr td {
+    padding: 10px;
+}
+
+tbody tr td:nth-child(2) {
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 250px;
+}
+
+tbody tr td:first-child {
+    text-align: center;
+}
+
+tbody tr td input[type=checkbox] {
+    display: inline-block;
+}
+
+tbody tr td {
+    border-bottom: 1px solid #dee2e6;
+}
+
+tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.col-name:hover {
+    white-space: inherit;
+}
+
+thead tr td:first-child {
+    border-radius: 1em 0 0 0;
+}
+
+thead tr td:last-child {
+    border-radius: 0 1em 0 0;
+}
+
+tbody tr td:last-child {
+    text-align: center;
+    color: red;
+}
+
+tbody .fas, tbody .far, tbody .fa {
+    font-size: 2.2rem;
+    margin: 0 5px;
+}
+
+.progress {
+    position: relative;
+    height: 1.2rem;
+}
+
+#progr-text {
+    position: absolute;
+    width: 100%;
+    color: black;
+    font-weight: bold;
+}
+
+/*************************Scrollbar Style********************************/
+
+::-webkit-scrollbar {
+    width: 25px;
+}
+
+::-webkit-scrollbar-track {
+    margin-left: 15px;
+    margin-top: 45px;
+    margin-bottom: 40px;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: rgba(12, 45, 84, 0.82);
+    box-shadow: inset 0 0 6px rgba(15, 111, 228, 0.82);
+}
+
+/************************* End ********************************/
+
+footer {
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    background-color: #14243d;
+    padding: 5px;
+    text-align: left;
+    border-radius: 0 0 1em 1em;
+    font-size: 18px;
+    font-weight: 750;
+}
+
+footer span {
+    align-self: center;
+    margin: 0 5px
+}
+
+#download-path {
+    flex-grow: 1;
+    align-self: center;
+    cursor: pointer;
+}
+
+#download-path:hover {
+    text-decoration-line: underline;
+}
+
+#file-pending {
+    flex-shrink: 1;
+    color: burlywood;
+}
+
+/****************************Check-box******************************/
+
+.check-row {
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+
+.check-row:after {
+    content: " ";
+    display: inline-block;
+    min-width: 20px;
+    min-height: 20px;
+    background: #ddd;
+    border-radius: 100%;
+    position: absolute;
+    top: -15px;
+    left: 15px;
+    cursor: pointer;
+}
+
+.check-row input[type=checkbox] {
+    display: none;
+}
+
+.check-row label {
+    display: inline-block;
+    height: 45px;
+    width: 50px;
+    cursor: pointer;
+    margin: 0;
+}
+
+.check-row label:after {
+    content: " ";
+    display: block;
+    min-width: 15px;
+    min-height: 15px;
+    border-radius: 100px;
+    transition: all .3s ease;
+    position: absolute;
+    top: -12px;
+    left: 17.5px;
+    z-index: 1;
+    background: #333;
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.5);
+    transition: all .15s ease;
+}
+
+.check-top:after {
+    top: -12px;
+    left: 17.5px;
+}
+
+.check-top label:after {
+    top: -12px;
+    left: 17.5px;
+}
+
+.check-row input[type=checkbox]:checked+label:after {
+    background: #2623cc;
+}
+
+.check-top input[type=checkbox]:checked+label:after {
+    background: #26ca28;
+}
+
+/****************************************************/
+
+#always-top, #always-top label, #always-top span {
+    padding: 0;
+    margin: 0;
+}
+
+#always-top label, #always-top input {
+    display: none;
+}
+
+#always-top label {
+    position: relative;
+    display: flex;
+    height: 30px;
+    width: 90px;
+    flex-basis: auto;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#always-top label:after {
+    content: " ";
+    display: block;
+    position: absolute;
+    min-width: 17px;
+    min-height: 17px;
+    border-radius: 100px;
+    left: 1px;
+    z-index: 1;
+    background: #333;
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.5);
+    transition: all .15s ease;
+}
+
+#always-top span {
+    position: absolute;
+    left: 32px;
+}
+
+#always-top .check-top {
+    display: inline-block;
+    position: absolute;
+    height: 21px;
+    width: 21px;
+    background-color: wheat;
+    border-radius: 100px;
+    left: -1px;
+}
+
+#always-top input[type=checkbox] {
+    display: none;
+}
+
+#always-top input[type=checkbox]:checked+label:after {
+    background: #26ca28;
+}
+
+/*******************row check******************/
+
+tbody tr td:first-child {
+    padding: 0px;
+    height: auto;
+    width: 1px;
+}
+
+.unCorner {
+    border-radius: 0;
+}
+
+.d-controls label .fa-clipboard {
+    position: relative;
+}
+
+.d-controls label .fa-eye {
+    display: none;
+    position: absolute;
+    top: 8px;
+    left: 2px;
+    font-size: 12px;
+    pointer-events: none
+}
+
+.d-controls label input:checked+.fa-eye {
+    display: inline-block;
+}
+#modal-scan-folder{
+    display: none;
+}
+#scan-list-show {
+    align-self: center;
+    margin: 0 10px;
+}
+#file-list-show i,
+#scan-list-show .fa-clipboard {
+    position: relative;
+    font-size: 22px;
+}
+
+#scan-list-show .fa-folder {
+    position: absolute;
+    font-size: 9px;
+    top: 8px;
+    left: 3.6px;
+}
+
+.modal-content {
+    position: fixed;
+    bottom: 45px;
+    left: 5px;
+    max-width: 450px;
+    z-index: 12;
+}
+
+.list-group li {
+    padding: 10px;
+}
+
+#scan-list-empty {
+    display: none;
+}
+
+#scan-list-empty:only-child {
+    display: block;
+}
+
+.list-group li .fa-trash-alt {
+    font-size: 20px;
+    cursor: pointer;
+}
+#file-list-hide,
+#scan-list-hide, 
+#list-add-folder {
+    position: absolute;
+    font-size: 25px;
+    top: 4px;
+    left: 10px;
+}
+#file-list-hide,
+#scan-list-hide {
+    left: inherit;
+    right: 10px;
+}
+
+.card-header {
+    padding: 10px;
+}
+.modal-body{
+    padding: 0 .2rem;
+}
+#modal-file-list
+{
+  display: none;
+  height: calc(100% - 100px);
+  border-radius: 5px;
+  max-width: 500px;
+}
+#file-list-content .list-group-item{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#file-list-content .list-group-item:hover{
+  white-space: initial;
+}
+
+#file-list-content{
+    overflow-y: auto;
+    padding: 0 .3rem;
+}
+
+#file-list-footer{
+   height: 40px;
+}
+
+#file-list-footer .input-group{
+    padding: 0 20px 0 10px;
+    height: 35px;
+    margin-top: 5px;
+}
+
+#file-list-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+#file-list-content::-webkit-scrollbar-track {
+    margin: 0;
+}
+
+#file-list-content::-webkit-scrollbar-thumb {
+    border-radius: 0px;
+    margin: 3px 0;
+}
+.pagination:empty{
+    display: none;
+}
