@@ -1,0 +1,37 @@
+{
+  "name": "mangadownload",
+  "version": "0.0.1",
+  "description": "A Manga Downloader",
+  "build": {
+    "appId": "rc-manga-download"
+  },
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build-package": "electron-packager . --platform=win32 --arch=x64 MangaDownload",
+    "rebuild": "electron-rebuild -f -w sqlite3"
+  },
+  "keywords": [
+    "Manga",
+    "Download"
+  ],
+  "author": "R-C",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^3.0.3",
+    "electron-rebuild": "^1.8.2",
+    "electron-reload": "^1.2.5",
+    "node-gyp": "^3.8.0"
+  },
+  "dependencies": {
+    "@types/fs-extra": "^5.0.4",
+    "electron-squirrel-startup": "^1.0.0",
+    "fs-extra": "^7.0.0",
+    "jquery": "^3.3.1",
+    "sequelize": "^4.39.0",
+    "sharp": "^0.20.8",
+    "sqlite3": "^4.0.2",
+    "win-explorer": "file:..\\local_modules\\win-explorer",
+    "zip-local": "^0.3.4"
+  }
+}

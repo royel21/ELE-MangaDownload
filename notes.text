@@ -1,0 +1,15 @@
+
+    $('.fa-play-circle').click(e => {
+        // var id = $(e.target).closest('tr')[0].id;
+        // DManager.pauseDownload(id, false);
+    })
+
+    $('tbody tr .fa-pause-circle').click(e => {
+        var id = $(e.target).closest('tr')[0].id;
+        DManager.pauseDownload(id, true);
+    })
+
+    $('tbody tr .fa-stop-circle').click(e => {
+        var id = $(e.target).closest('tr')[0].id;
+        DManager.pauseDownload(id, true);
+    })

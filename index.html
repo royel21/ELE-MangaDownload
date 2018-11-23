@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./webcontent/lib/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./webcontent/lib/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="./webcontent/css/index.css">
+    <title>MangaDownload</title>
+</head>
+
+<body>
+    <div id="popup"></div>
+    <div class="text-left d-controls text-light">
+        <div id='d-control' class='d-inline-block'>
+            <span id="d-add"><i class="fas fa-plus-square"></i></span>
+            <span id="d-resume"><i class="far fa-play-circle"></i></span>
+            <span id="d-pause"><i class="far fa-pause-circle"></i></span>
+            <span id="d-stop"><i class="far fa-stop-circle"></i></span>
+            <label for="d-m-clip" id="d-clip-monitor">
+                <i class="far fa-clipboard">
+                    <input id="d-m-clip" type="checkbox" class="d-none">
+                    <i class="far fa-eye"></i>
+                </i>
+            </label>
+        </div>
+        <div id='drag-region'></div>
+        <div id='win-control' class='d-inline-block'>
+            <span id="btn-sys-min">
+                <i class="fas fa-window-minimize"></i>
+            </span>
+            <span id="btn-sys-max">
+                <i class="fas fa-window-restore"></i>
+            </span>
+            <span class="btn-sys-close">
+                <i class="fas fa-window-close"></i>
+            </span>
+        </div>
+    </div>
+    <div id="notify-panel"></div>
+    <div id="modal-scan-folder" class="modal-content card bg-dark text-light font-weight-bold">
+        <div class="modal-body">
+            <div id="scan-list-header" class="card-header text-center position-relative">
+                <span id="list-add-folder">
+                    <i class="fas fa-plus-square"></i>
+                </span>
+                <span>Scan Folder List</span>
+                <span id="scan-list-hide"><i class="far fa-times-circle"></i></span>
+            </div>
+            <div id="file-browser-config" class="p-2">
+                <ul id="scan-list" class="list-group text-dark  bg-primary">
+                    <li id="scan-list-empty" class="list-group-item">Empty</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="modal-file-list" class="modal-content card bg-dark text-light font-weight-bold">
+        <div id="file-list-header" class="card-header text-center position-relative">
+            <span>Files List</span>
+            <span id="file-list-hide"><i class="far fa-times-circle"></i></span>
+        </div>
+        <div id="file-list-content">
+            <ul id="file-list" class="list-group-flush text-dark">
+                <li id="scan-list-empty" class="list-group-item">Empty</li>
+            </ul>
+        </div>
+        <div id="file-list-footer" class="text-center">
+            <ul id="pagination-list" class="pagination"></ul>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><i class="fa fa-search"></i><span id="file-found"></span></div>
+                </div>
+                <input type="text" name="" id="files-filter" class="form-control" placeholder="Search">
+            </div>
+        </div>
+    </div>
+    <div class="text-light text-center main-container">
+        <div id="content">
+            <div id="table-container" class="bg-dark">
+                <table id="download" class="w-100">
+                    <thead>
+                        <tr>
+                            <td id="check">
+                                <label>All</label>
+                            </td>
+                            <td>Name</td>
+                            <td>state</td>
+                            <td>Pages</td>
+                            <td>Progress</td>
+                            <td>Action</td>
+                        </tr>
+                    </thead>
+                    <tbody class="table-item">
+                        <td colspan="6">No Download</td>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <footer>
+            <span id="file-pending">Downloads: 0/0 </span>
+            <div id="download-path"></div>
+            <span id="always-top">
+                <input id="win-top" type="checkbox">
+                <label for="win-top">
+                    <span class="check-top"></span>
+                    <span>Top</span>
+                </label>
+            </span>
+        </footer>
+    </div>
+    <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
+    <script src="./webcontent/lib/js/jquery.min.js"></script>
+    <script src="./webcontent/lib/js/popper.min.js"></script>
+    <script src="./webcontent/lib/js/bootstrap.min.js"></script>
+    <script src="./webcontent/js/index.js"></script>
+    <script src="./webcontent/js/events.js"></script>
+    <script src="./webcontent/js/pagination.js"></script>
+    <script>if (window.module) module = window.module</script>
+</body>
+
+</html>
