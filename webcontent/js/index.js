@@ -43,13 +43,6 @@ $('#d-m-clip').change((e) => {
     }
 });
 
-function resizeImage() {
-    $('#content').css('height', window.innerHeight);
-    $('#file-list-content').css({
-        height: $('#modal-file-list').height() - 95
-    });
-}
-
 openDir = () => {
     var dir = dialog.showOpenDialog(mainWindow, {
         title: "Select the folder",
@@ -57,7 +50,7 @@ openDir = () => {
     });
     if (dir) {
         DManager.setDirectory(dir);
-        $dwPath.text('Path: ' + dir);
+        $dwPath.text('Download: ' + dir);
     }
 };
 
@@ -70,7 +63,7 @@ $('body table').on('click', 'tr .fa-trash-alt', (e) => {
     });
 })
 
-$dwPath.text('Path: ' + DManager.dir);
+$dwPath.text('Download: ' + DManager.dir);
 $dwPath.click(openDir);
 
 $('#win-top').on('change', (e) => {
@@ -87,9 +80,6 @@ $(() => {
     $('#btn-sys-min').on('click', minWindow);
     $('#btn-sys-max').on('click', maxWindow);
     $('.btn-sys-close').on('click', closeWindow);
-    window.onresize = resizeImage;
-
-    resizeImage();
 
     db.init().then(() => {
         $('#content').animate({
@@ -104,5 +94,37 @@ $(() => {
         })
     });
     updateOnlineStatus();
-    
+}); 
+
+$(document.body).keydown((e)=>{
+    var $row = $(event.target.closest('tr'));
+    switch (event.keyCode) {
+        
+        case 38:
+            {
+                if ($row.prev()[0].id == "") {
+                    $row.closest('tbody').find('tr').last().focus();
+                } else {
+                    $row.prev().focus();
+                }
+                break;
+            }
+
+        case 40:
+            {
+                if ($row.next()[0] == undefined) {
+                    $row.closest('tbody').find('tr').get(1).focus();
+                } else {
+                    $row.next().focus();
+                }
+                break;
+            }
+    }
 });
+
+cleanNoty = (e)=>{
+    var el = e.target.closest('span');
+    $('#notify-panel').empty().append(el);
+    $(el).click(cleanNoty);
+}
+$('#clean-notify').click(cleanNoty);
