@@ -89,16 +89,27 @@ body {
     border-radius: 0 0.6em 0 0;
 }
 
+#d-clean-complete .fa-trash-alt{
+    position: relative;
+}
+
+#d-clean-complete .fa-broom{
+    position: absolute;
+    top: 3px;
+    left: -2px;
+    color: midnightblue;
+}
+
 #win-control .btn-sys-close:hover {
     background-color: red;
 }
 #clean-notify:active,
 table tr .fa-trash-alt,
-.d-controls span i:active,
-.d-controls label i:active{
+.d-controls span:active i,
+.d-controls label:active i{
     transform: translateY(5px)
 }
-
+#d-path:hover,
 footer .round-check label:hover,
 table tr .fa-trash-alt:hover,
 .d-controls span:hover, 
@@ -268,22 +279,43 @@ footer {
 
 footer span {
     align-self: center;
-    margin: 0 5px
+    margin: 0 5px;
 }
 
-#download-path {
+#d-path {
     flex-grow: 1;
     align-self: center;
     cursor: pointer;
+    margin-left: 5px;
 }
 
-#download-path:hover {
+#d-path span{
+    margin: 0;
+}
+#d-path span:hover {
     text-decoration-line: underline;
 }
 
-#file-pending {
+#d-path .fa-folder {
+    position:relative;
+    font-size: 27px;
+}
+
+#d-path .fa-arrow-down {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    font-size: 18px;
+    color: brown;
+}
+
+#d-files-count{
+    display: inline-block;
+    background-color: wheat;
+    border-radius: 5px;
+    padding: 2px 4px;
+    color: black;
     flex-shrink: 1;
-    color: burlywood;
 }
 
 /****************************************************/
@@ -342,7 +374,7 @@ footer span {
 }
 
 .round-check input[type=checkbox]:checked+label:after {
-    background: #26ca28;
+    background: honeydew;
 }
 #download .round-check label{
     width: 44px;
@@ -520,8 +552,6 @@ tbody tr td:first-child {
 
 #notify-panel
 {
-    display: flex;
-    flex-direction: column-reverse;
     background-color: transparent;
     position: fixed;
     top: 48px;
@@ -531,10 +561,19 @@ tbody tr td:first-child {
     opacity: 1;
     z-index: 999;
     pointer-events: none;
+}
+#notifications{
+    display: flex;
+    flex-direction: column-reverse;
+    background-color: transparent;
+    width: 100%;
+    min-height: 100%;
+    height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
 }
-#notify-panel::-webkit-scrollbar{
+
+#notifications::-webkit-scrollbar{
     width: 0px;
 }
 
@@ -542,16 +581,19 @@ tbody tr td:first-child {
     flex-shrink: 0;
     display: none;
     width: 200px;
-    height: 100px;
+    min-height: 100px;
     margin: 2px;
     border-radius: 5px;
-    background-color: beige;
     cursor: pointer;
     font-size: 11px;
     padding: 5px;
     pointer-events: auto;
     
 }
+.noty:hover{
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
 .noty-title
 {
     text-align: center;
@@ -564,11 +606,28 @@ tbody tr td:first-child {
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: left;
-    margin: 2px auto;
-    max-height: 67px;
+    padding: 2px auto;
     pointer-events: none
 }
 
+
+#clean-notify{
+    display: inline-block;
+    text-align: center;
+    position: fixed;
+    bottom: 44px;
+    right: 5px;
+    font-size: 25px;
+    height: 40px;
+    width: 40px;
+    color: red;
+    border-radius: 50%;
+    pointer-events: all;
+}
+
+#clean-notify:only-child{
+    display: none;
+}
 
 #popup{
     display: none;
@@ -646,20 +705,3 @@ tbody tr:last-child:hover td:last-child{
     border-radius: 0 0 1em 0;
 }
 
-#clean-notify{
-    display: inline-block;
-    text-align: center;
-    position: absolute;
-    bottom: 0;
-    font-size: 25px;
-    height: 40px;
-    width: 40px;
-    background-color:rgba(20, 210, 230, 0.82);
-    color: red;
-    border-radius: 50%;
-    pointer-events: all;
-}
-
-#clean-notify:only-child{
-/*     display: none; */
-}

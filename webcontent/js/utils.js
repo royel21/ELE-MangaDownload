@@ -25,16 +25,27 @@ Array.prototype.removeById = function (obj) {
     }
 }
 
-Storage.prototype.setObject = function(key, value) {
+Storage.prototype.setObject = function (key, value) {
     this.setItem(key, JSON.stringify(value));
 }
 
-Storage.prototype.getObject = function(key) {
+Storage.prototype.getObject = function (key) {
     var value = this.getItem(key);
-    if(value == "undefined") return [];
+    if (value == "undefined") return [];
     return value && JSON.parse(value);
 }
 
+$.expr[":"].contains = $.expr.createPseudo(function (arg) {
+    return function (elem) {
+        return $(elem).text().trim().toUpperCase().includes(arg.trim().toUpperCase());
+    };
+});
+
+$.expr[":"].textequalto = $.expr.createPseudo(function (arg) {
+    return function (elem) {
+        return $(elem).text().trim().toUpperCase() === arg.trim().toUpperCase();
+    };
+});
 
 function FormattBytes(b) {
     var div = [];
@@ -47,13 +58,13 @@ function FormattBytes(b) {
                     div.push("B")
                     break;
                 }
-            case ((b >= mul && b <= mul**2) ? b : -1):
+            case ((b >= mul && b <= mul ** 2) ? b : -1):
                 {
                     div.push(1)
                     div.push("KB")
                     break;
                 }
-            case ((b >= mul**2 && b <= mul**3) ? b : -1):
+            case ((b >= mul ** 2 && b <= mul ** 3) ? b : -1):
                 {
                     div.push(2)
                     div.push("MB")
@@ -66,32 +77,33 @@ function FormattBytes(b) {
                     break;
                 }
         }
-        return Number(b/1024**div[0]).toFixed(2)+div[1];
+        return Number(b / 1024 ** div[0]).toFixed(2) + div[1];
     } else
         return "0";
 }
 
-
-var id = 0;
-
 Notify = (data) => {
-    var $notyPanel = $('#notify-panel');
-    var lastChild = $notyPanel.children().last()[0];
-    if (lastChild != undefined) {
-        id = lastChild.id.replace('noty-', '');
-    }
-    var $noty = $(`<div id="noty-${++id}" class="noty">`)
-    $noty.append(`<div class="noty-title">${data.title}</div>`);
-    $noty.append(`<div class="noty-body">${data.body}</div>`);
-    $noty.addClass('bg-' + data.type);
-    $noty.click((e) => {
-        $(e.target).fadeOut('slow',()=>{
-            $(e.target).remove();
-        })
-    });
+    var $notyPanel = $('#notifications');
+    if ($notyPanel.find('.noty-body:contains(' + data.body + ')')[0] == undefined) {
+        var id = 0;
+        var lastChild = $notyPanel.children().first()[0];
+        if (lastChild != undefined && lastChild.id !== "clean-notify") {
+            id = lastChild.id.replace('noty-', '');
+        }
 
-    $notyPanel.prepend($noty);
-    $noty.fadeIn('slow');
+        var $noty = $(`<div id="noty-${++id}" class="noty bg-${data.type}">` +
+            `<div class="noty-title">${data.title}</div>` +
+            `<div class="noty-body">${data.body}</div></div>`);
+
+        $noty.click((e) => {
+            $(e.target).closest('.noty').fadeOut('slow', () => {
+                $(e.target).remove();
+            })
+        });
+
+        $notyPanel.prepend($noty);
+        $noty.fadeIn('slow');
+    }
 }
 
 module.exports = {

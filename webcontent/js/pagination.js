@@ -67,7 +67,7 @@ $('#files-filter').keyup((e) => {
     var val = $('#files-filter').val().toLowerCase();
     if (val.length > 2) {
         list = filesList.filter((f) => {
-            return f.FileName.toLocaleLowerCase().indexOf(val) > -1
+            return f.FileName.toLocaleLowerCase().includes(val)
         });
         loadList();
     } else {

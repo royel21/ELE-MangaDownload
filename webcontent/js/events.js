@@ -25,13 +25,8 @@ ipcRenderer.on('zip-done', (e, row) => {
         .then((f) => {
             DManager.updateProgress('Done', 0, d);
             DManager.saveState();
-            DManager.remove(d.id);
+            DManager.removeRunning(d.id);
             DManager.CreateDownload();
-            Notify({
-                title: "Download Complete:",
-                body: d.name,
-                type: "success"
-            });
         }).catch(function (err) {
             console.log(err);
             console.log(d.name);
@@ -54,6 +49,7 @@ ipcRenderer.on('loaded', (e, d) => {
                 DManager.addRow(d);
                 DManager.saveState();
                 DManager.CreateDownload();
+                $('#file-pending').text((DManager.getTotal() - DManager.getPending()) + '/' + DManager.getTotal());
             } else {
                 Notify({
                     title: "Download Exist:",
@@ -70,7 +66,7 @@ ipcRenderer.on('loaded', (e, d) => {
 
 ipcRenderer.on('suspend', (e) => {
     DManager.saveState();
-    DManager.removeAll();
+    DManager.removeAllRunning();
     console.log('suspend');
 });
 
@@ -80,7 +76,7 @@ ipcRenderer.on('resume', (e) => {
 });
 
 ipcRenderer.on('shutdown', (e) => {
-    DManager.removeAll();
+    DManager.removeAllRunning();
     DManager.saveState();
 });
 
@@ -129,21 +125,28 @@ popupHide = (event) => {
 }
 
 popupShow = (event) => {
-
+    var pos = event.target.getBoundingClientRect();
     var msg = event.target.dataset.title;
     $popup.css({
         display: "block",
         top: -3000,
-        left: event.target.offsetLeft + (event.target.offsetWidth / 2) - 120
+        left: -300
     }).text(msg == undefined ? event.target.textContent : msg);
 
     var top = event.target.getBoundingClientRect().top + 8 + event.target.offsetHeight
     if (top + $popup.height() + 10 > window.innerHeight) {
-        top = event.target.getBoundingClientRect().top - 22 - $popup.height()
+        top = pos.top - 22 - $popup.height()
         $popup.addClass('top');
     }
+    var popupW = $popup.width() / 2;
+    var left = (pos.x + pos.width / 2) - popupW;
+    if (left < 0) {
+        left = 5;
+    }
+
     $popup.css({
-        top
+        top,
+        left
     });
 }
 
@@ -151,16 +154,15 @@ $('body').on('mouseenter', '.popup-msg', popupShow);
 
 $('body').on('mouseleave', '.popup-msg', popupHide);
 
-updateOnlineStatus = () =>{
-    $('#online-status').css({color: navigator.onLine ? "#007bff"  : 'red'});
-    if(navigator.onLine)
-    {
+updateOnlineStatus = () => {
+    $('#online-status').css({ color: navigator.onLine ? "#007bff" : 'red' });
+    if (navigator.onLine) {
         $('#online-status').removeClass("offline");
-    }else{
+    } else {
         $('#online-status').addClass("offline");
     }
     DManager.handleOffline(navigator.onLine);
 }
 
-window.addEventListener('online',  updateOnlineStatus)
-window.addEventListener('offline',  updateOnlineStatus)
+window.addEventListener('online', updateOnlineStatus)
+window.addEventListener('offline', updateOnlineStatus)

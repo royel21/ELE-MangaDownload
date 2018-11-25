@@ -16,8 +16,6 @@ if (local.getItem('downloads-dir') === null) {
     local.setItem('max-download', 2);
 }
 
-var states = ['Pending', 'Running', 'Paused', 'Stopped', 'Done']
-
 module.exports = class Downloads {
     constructor() {
         this.store = new DStore();
@@ -53,27 +51,33 @@ module.exports = class Downloads {
     }
 
     delete(id) {
-        this.runningDownload.removeById({
-            id
-        });
-        var str = this.store;
-        var downloaded = str.getAll().length - str.getPendding().length;
-        $('#file-pending').text('Downloads: ' + downloaded + '/' + str.getAll().length);
-        return this.store.removeById(id);
+        this.removeRunning(id.id);
+        return this.store.store.removeById(id);
     }
 
-    remove(id) {
-        return this.runningDownload.removeById({
-            id
+    getTotal(){
+        return this.store.getAll().length;
+    }
+
+    getPending(){
+        return this.store.getPendding().length;
+    }
+
+    getCompleted(){
+        return this.store.getAll().filter((d)=>{
+            return d.state == State.Done;
         });
     }
 
-    removeAll(id) {
-        var i = this.runningDownload.length;
+    removeRunning(id) {
+        return this.runningDownload.removeById({id});
+    }
 
-        while (i--) {
-            var d = this.runningDownload.splice(i, 1);
-            if ([0, 1].indexOf(d.state) > -1) d.stop = true;
+    removeAllRunning() {
+        if(this.runningDownload.length > 0)
+        {
+            for(var d of this.runningDownload) d.stop = true;
+            this.runningDownload = [];
         }
     }
 
@@ -88,13 +92,13 @@ module.exports = class Downloads {
             id: data.id,
             name: data.name,
             pages: data.pages,
-            state: states[data.state],
+            state: data.state,
         }
         var row = Template('./webcontent/template/download-row.html', temp);
 
         $('table tbody').append(row);
         if ($('thead tr').hasClass('tb-empty')) $('thead tr').removeClass('tb-empty');
-        if (data.state === 4) this.DoneState('', data);
+        if (data.state === State.Done) this.DoneState('', data);
     }
 
     setMaxDownload(max) {
@@ -109,7 +113,7 @@ module.exports = class Downloads {
     }
 
     addDownload(url) {
-        var address = url.indexOf('/1/') > -1 ? url : url + '1/';
+        var address = url.includes('/1/') ? url : url + '1/';
         var s = this.store.exist(address);
         if (s == undefined) {
             var winLoadName = new BrowserWindow({
@@ -138,7 +142,7 @@ module.exports = class Downloads {
             Notify({
                 title: "Download is in the list:",
                 body: s.name,
-                type: "danger"
+                type: "primary"
             });
         }
     }
@@ -169,7 +173,7 @@ module.exports = class Downloads {
                 }
             case "Running":
                 {
-                    data.state = 1;
+                    data.state = State.Running;
                     $tr.find('td:eq(2)').text('Running');
                     break;
                 }
@@ -180,7 +184,7 @@ module.exports = class Downloads {
                 }
             case "Done":
                 {
-                    data.state = 4;
+                    data.state = State.Done;
                     this.DoneState('Done', data);
                     break;
                 }
@@ -198,7 +202,7 @@ module.exports = class Downloads {
         $tr.find('#progr-text').text(data.pages + '/' + data.pages);
         var str = this.store;
         var downloaded = str.getAll().length - str.getPendding().length
-        $('#file-pending').text('Downloads: ' + downloaded + '/' + str.getAll().length);
+        $('#file-pending').text(downloaded + '/' + str.getAll().length);
     }
 
     zippFile(d_id, data) {

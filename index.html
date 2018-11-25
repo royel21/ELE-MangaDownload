@@ -15,18 +15,31 @@
     <div id="popup"></div>
     <div class="text-left d-controls text-light">
         <div id='d-control' class='d-inline-block'>
-            <span id="d-add"><i class="fas fa-plus-square"></i></span>
-            <span id="d-resume"><i class="far fa-play-circle"></i></span>
-            <span id="d-pause"><i class="far fa-pause-circle"></i></span>
-            <span id="d-stop"><i class="far fa-stop-circle"></i></span>
-            <label for="d-m-clip" id="d-clip-monitor">
+            <span id="d-add" data-title="Add New Download" class="popup-msg">
+                <i class="fas fa-plus-square"></i>
+            </span>
+            <span id="d-resume" data-title="Resume Selected" class="popup-msg">
+                <i class="far fa-play-circle"></i>
+            </span>
+            <span id="d-pause" data-title="Pause Selected" class="popup-msg">
+                <i class="far fa-pause-circle"></i>
+            </span>
+            <span id="d-stop" data-title="Stop Selected" class="popup-msg">
+                <i class="far fa-stop-circle"></i>
+            </span>
+            <label for="d-m-clip" id="d-clip-monitor" data-title="Monitor Clipboard" class="popup-msg">
                 <i class="far fa-clipboard">
                     <input id="d-m-clip" type="checkbox" class="d-none">
                     <i class="far fa-eye"></i>
                 </i>
             </label>
+            <span id="d-clean-complete" data-title="Clear Complete" class="popup-msg">
+                <i class="fa fa-trash-alt">
+                    <i class="fas fa-broom"></i>
+                </i>
+            </span>
         </div>
-        <span id="online-status"><i class="fas fa-plug"></i></span>
+        <span id="online-status" data-title="Network Status" class="popup-msg"><i class="fas fa-plug"></i></span>
         <div id='drag-region'></div>
         <div id='win-control' class='d-inline-block'>
             <span id="btn-sys-min">
@@ -40,7 +53,13 @@
             </span>
         </div>
     </div>
-    <div id="notify-panel"><span id="clean-notify"><i class="fas fa-trash-alt"></i></span></div>
+    <div id="notify-panel">
+        <div id="notifications">
+            <span id="clean-notify">
+                <i class="fas fa-trash-alt"></i>
+            </span>
+        </div>
+    </div>
     <div id="modal-scan-folder" class="modal-content card bg-dark text-light font-weight-bold">
         <div class="modal-body">
             <div id="scan-list-header" class="card-header text-center position-relative">
@@ -83,8 +102,9 @@
                 <table id="download" class="w-100">
                     <thead>
                         <tr>
-                            <td id="check">
-                                <label>All</label>
+                            <td data-title="Check All" class="popup-msg">
+                                <input type="checkbox" name="checkall" id="check-all" class="d-none">
+                                <label for="check-all">All</label>
                             </td>
                             <td>Name</td>
                             <td>state</td>
@@ -100,8 +120,16 @@
             </div>
         </div>
         <footer>
-            <span id="file-pending">Downloads: 0/0 </span>
-            <div id="download-path"></div>
+            <span id="d-files-count">
+                <i class="fas fa-download"></i>
+                <span id="file-pending">0/0 </span>
+            </span>
+            <div id="d-path">
+                <i class="fa fa-folder">
+                    <i class="fas fa-arrow-down"></i>
+                </i>
+                <span id="download-path" data-title="Download Path" class="popup-msg"></span>
+            </div>
             <span class="round-check">
                 <input id="round-check-input" type="checkbox">
                 <label for="round-check-input">

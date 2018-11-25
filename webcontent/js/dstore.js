@@ -1,11 +1,12 @@
 const local = localStorage
 
+State = { Pending: "Pending", Running: "Running", Pause: "Paused", Done: "Done", Stopped: "Stopped" }
+
 module.exports = class DStore {
 
     constructor() {
         this.store = [];
-        if(local.getObject('download-list') != "undefined" && local.getObject('download-list') != null)
-        {
+        if (local.getObject('download-list') != "undefined" && local.getObject('download-list') != null) {
             this.store = local.getObject('download-list');
         }
     }
@@ -44,7 +45,7 @@ module.exports = class DStore {
 
     getPendding() {
         var temp = this.store.filter(d => {
-            return d.state == 0 || d.state == 1;
+            return d.state == State.Pending || d.state == State.Running;
         });
         return temp;
     }
@@ -55,9 +56,9 @@ module.exports = class DStore {
 
     remove(item) { return removeById(item.id); }
 
-    removeById(id) { return this.store.removeById({id}); }
+    removeById(id) { return this.store.removeById({ id }); }
 
-    clear() {  this.store = []; }
+    clear() { this.store = []; }
 
     saveData() {
         local.setObject('download-list', this.store);

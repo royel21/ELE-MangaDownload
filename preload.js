@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             id: index,
             name: nameFormat(g.title.english),
             pages: g.num_pages,
-            state: 0,
+            state: "Pending",
             url: img,
             oUrl: document.location.href
         }
@@ -50,7 +50,7 @@ function nameFormat(name, padding = 3) {
     if (res1 == null || res2 == null) return str;
 
     for (let [i, s] of res2.entries()) {
-        temp += res1[i] + s.padStart(padding, 0);
+        temp += res1[i] + String(Number(s)).padStart(padding, 0);
     }
 
     var elem = document.createElement('textarea');
