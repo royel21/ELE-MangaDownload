@@ -130,7 +130,7 @@ table {
 
 thead {
     background-color: #bbb;
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #d6d6d6), color-stop(0.4, #c0c0c0), color-stop(1, #a4a4a4));
+    background-image: gradient(linear, left top, left bottom, color-stop(0, #d6d6d6), color-stop(0.4, #c0c0c0), color-stop(1, #a4a4a4));
     border-radius: 1em 1em 1em 1em;
 }
 
