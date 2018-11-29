@@ -23,6 +23,37 @@
         fromWindow.webContents.send('zip-done', data);
         window.close();
     }
+    
+    resizeImages = async (filePath) => {
+    var newPath = path.join(path.dirname(filePath), "resize", path.basename(filePath));
+    fs.mkdirsSync(newPath);
+    var imgs = windir.ListFiles(filePath)
+        .filter((f) => ['png', 'gif', 'jpg', 'jpeg'].includes(f.extension.toLocaleLowerCase()));
+    var dcount = 0;
+
+    var workerId = setInterval(() => {
+        if (imgs.length > 0 && dcount < 3) {
+
+            new Promise((resolve, reject) => {
+
+                var d = imgs.shift();
+                var newImg = path.join(newPath, d.FileName);
+                sharp(path.join(filePath, d.FileName)).jpeg({
+                    quality: 80
+                }).resize(1100).toFile(newImg, (error) => {
+                    resolve(newImg);
+                    console.log(d.FileName);
+                    dcount--;
+                });
+            });
+            dcount++;
+        }
+        if (dcount === 0 && imgs.length === 0) {
+            clearInterval(workerId);
+        }
+    },0);
+}
+
 </script>
 
 </html>
