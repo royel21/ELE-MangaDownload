@@ -52,10 +52,10 @@ async function ZipCover(filename, coverP, basedir) {
     });
 }
 
-var dir = "G:\\nHentai\\to";
+var dir = "D:\\Temp\\processes";
 resizeImages = async (ex) => {
     
-    var files = windir.ListFiles(dir).filter((f)=> f.isDirectory);
+    var files = windir.ListFiles(dir).filter((f)=> f.isDirectory && f.FileName != "resize");
 
     for (var f of files) {
         var filePath = path.join(dir, f.FileName);
@@ -87,7 +87,7 @@ resizeImages = async (ex) => {
                     new Promise((resolve, reject) => {
 
                         var d = imgs.shift();
-                      // var newImg = path.join(newPath, d.FileName.split('.')[0]) + '.webp';
+                    //   var newImg = path.join(newPath, d.FileName.split('.')[0]) + '.webp';
                         var newImg = path.join(newPath, d.FileName.split('.')[0])+".jpg";
                         sharp(path.join(filePath, d.FileName))
                            // .webp({ quality: 75 })
@@ -108,5 +108,6 @@ resizeImages = async (ex) => {
         });
     }
 }
+console.log("test")
 resizeImages(dir)
 

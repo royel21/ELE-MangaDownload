@@ -1,10 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const http = require('https');
-const app = require('electron').remote;
-
-const BrowserWindow = app.BrowserWindow;
-const win = app.getCurrentWindow();
+const sharp = require('sharp')
 
 module.exports = class Download {
 
@@ -66,12 +63,16 @@ module.exports = class Download {
                             data.push(chunk);
                         });
                         response.on('end', function () {
-                            resolve('done');
-                            fs.writeFileSync(d.toFile, Buffer.concat(data));
+                            // fs.writeFileSync(d.toFile, Buffer.concat(data));
+                            sharp(Buffer.concat(data))
+                                .jpeg({ quality: 75 })
+                                .resize(1100).toFile(d.toFile, (err, info) => {
+                                    resolve('done');
+                                    console.log(info, err);
+                                    dthis.dcount--;
+                                });
                             if (typeof dthis.cb === "function")
-                                dthis.cb('Update',
-                                    dthis.data.pages - downloads.length, dthis.data);
-                            dthis.dcount--;
+                                dthis.cb('Update', dthis.data.pages - downloads.length, dthis.data);
                         });
                     });
 
