@@ -68,7 +68,6 @@ module.exports = class Download {
                                 .jpeg({ quality: 75 })
                                 .resize(1100).toFile(d.toFile, (err, info) => {
                                     resolve('done');
-                                    console.log(info, err);
                                     dthis.dcount--;
                                 });
                             if (typeof dthis.cb === "function")
