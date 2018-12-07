@@ -18,7 +18,7 @@ ipcRenderer.on('zip-done', (e, row) => {
     db.File
         .create({
             Name: d.name + '.zip',
-            CurrentPage: 0,
+            Current: 0,
             Size: file.Size,
             folderId: dirId
         })
