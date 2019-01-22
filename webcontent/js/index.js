@@ -81,6 +81,7 @@ $('body table').on('click', 'tr .fa-trash-alt', (e) => {
 
     $('tbody #d-' + id).fadeOut(300, 'linear', () => {
         $('tbody #d-' + id).remove();
+        $('#file-pending').text((DManager.getTotal() - DManager.getPending()) + '/' + DManager.getTotal());
     });
 })
 
@@ -109,6 +110,7 @@ $(() => {
                 Name: DManager.dir
             }
         }).then(folder => {
+            if(folder)
             dirId = folder[0].Id;
         })
     });

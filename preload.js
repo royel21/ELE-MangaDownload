@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         var g = reader.gallery;
         var d = {
             id: index,
-            name: nameFormat(g.title.english),
+            name: g.title.english,
             pages: g.num_pages,
             state: "Pending",
             url: img,
@@ -41,19 +41,3 @@ document.addEventListener("DOMContentLoaded", function (event) {
         window.close();
     });
 });
-
-function nameFormat(name, padding = 3) {
-    var str = name.replace(/[\\|?|<|>|*|:|"]/ig, '');
-    var res1 = str.split(/\d+/g);
-    var res2 = str.match(/\d+/g);
-    var temp = "";
-    if (res1 == null || res2 == null) return str;
-
-    for (let [i, s] of res2.entries()) {
-        temp += res1[i] + String(Number(s)).padStart(padding, 0);
-    }
-
-    var elem = document.createElement('textarea');
-    elem.innerHTML = temp + res1[res1.length - 1];
-    return elem.value;
-}

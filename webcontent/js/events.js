@@ -1,6 +1,7 @@
 const ipcRenderer = require('electron').ipcRenderer;
 const {
-    Notify
+    Notify,
+    nameFormat
 } = require('./webcontent/js/utils');
 var isMaximized = false;
 
@@ -34,8 +35,8 @@ ipcRenderer.on('zip-done', (e, row) => {
 });
 
 ipcRenderer.on('loaded', (e, d) => {
-    var name = d.name.toLocaleLowerCase().replace(/ \[digital\]| \[chinese\]| \[Decensored\]/ig, "");
-    console.log(name);
+    var name = nameFormat(d.name.toLocaleLowerCase().replace(/ \[digital\]| \[chinese\]| \[Decensored\]/ig, ""), 3);
+    d.name = nameFormat(d.name, 3);
     db.File.findOne({
         where: {
             Name: {

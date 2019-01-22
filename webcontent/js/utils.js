@@ -106,9 +106,29 @@ Notify = (data) => {
     }
 }
 
+function nameFormat(name, padding = 3) {
+    var str = name;
+    var res1 = name.split(/\d+/g);
+    var res2 = str.match(/\d+/g);
+    var temp = "";
+    if (res1 !== null && res2 !== null){
+        for (let [i, s] of res2.entries()) {
+            temp += res1[i] + String(Number(s)).padStart(padding, 0);
+        }
+        temp = temp + res1[res1.length - 1];
+    }else{
+        temp = name;
+    }
+    
+    var elem = document.createElement('textarea');
+    elem.innerHTML = temp;
+    return elem.value.replace(/[\\|?|<|>|*|:|"|/|,]/ig, '').replace("  ", " ");
+}
+
 module.exports = {
     Notify,
     Template,
-    FormattBytes
+    FormattBytes,
+    nameFormat
 }
 

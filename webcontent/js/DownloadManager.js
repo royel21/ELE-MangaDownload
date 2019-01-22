@@ -122,7 +122,7 @@ module.exports = class Downloads {
                 show: false,
                 webPreferences: {
                     preload: path.resolve('./preload.js'),
-                    nodeIntegration: false
+                    nodeIntegration: true
                 }
             });
 

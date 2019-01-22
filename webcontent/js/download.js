@@ -63,15 +63,31 @@ module.exports = class Download {
                             data.push(chunk);
                         });
                         response.on('end', function () {
-                            // fs.writeFileSync(d.toFile, Buffer.concat(data));
-                            sharp(Buffer.concat(data))
-                                .jpeg({ quality: 75 })
-                                .resize(1100).toFile(d.toFile, (err, info) => {
-                                    resolve('done');
-                                    dthis.dcount--;
-                                });
-                            if (typeof dthis.cb === "function")
-                                dthis.cb('Update', dthis.data.pages - downloads.length, dthis.data);
+                            var img = new Image();
+                            img.src = 'data:image/jpeg;base64,' + Buffer.concat(data).toString('base64');
+                            img.onload = function () {
+                                if (img.width < 1100 || img.height > 3000) {
+                                    sharp(Buffer.concat(data))
+                                        .jpeg({
+                                            quality: 75
+                                        }).toFile(d.toFile, (err, info) => {
+                                            resolve('done');
+                                            dthis.dcount--;
+                                        });
+                                } else {
+                                    sharp(Buffer.concat(data))
+                                        .jpeg({
+                                            quality: 75
+                                        })
+                                        .resize(1100).toFile(d.toFile, (err, info) => {
+                                            resolve('done');
+                                            dthis.dcount--;
+                                        });
+                                }
+
+                                if (typeof dthis.cb === "function")
+                                    dthis.cb('Update', dthis.data.pages - downloads.length, dthis.data);
+                            }
                         });
                     });
 
