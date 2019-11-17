@@ -1,7 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const http = require('https');
-const sharp = require('sharp')
+const sharp = require('sharp');
 
 module.exports = class Download {
 
@@ -22,7 +22,11 @@ module.exports = class Download {
     async startDownload() {
         var fromPage = 1;
         if (!fs.existsSync(this.dir)) {
-            fs.mkdirsSync(this.dir);
+            try{
+                fs.mkdirsSync(this.dir);
+            }catch(err){
+                console.log(err, this.dir)
+            }
         } else {
             fromPage = fs.readdirSync(this.dir).length + 1;
         }
@@ -84,7 +88,7 @@ module.exports = class Download {
                                             dthis.dcount--;
                                         });
                                 }
-
+                                
                                 if (typeof dthis.cb === "function")
                                     dthis.cb('Update', dthis.data.pages - downloads.length, dthis.data);
                             }
@@ -101,6 +105,7 @@ module.exports = class Download {
                     req.on('error', function (err) {
                         downloads.unshift(d);
                         dthis.dcount--;
+                        console.log(err)
                     });
                     req.end();
                 });

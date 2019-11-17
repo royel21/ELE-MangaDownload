@@ -20,7 +20,7 @@ ipcRenderer.on('zip-done', (e, row) => {
         .create({
             Name: d.name + '.zip',
             Current: 0,
-            Size: file.Size,
+            Size: file ? file.Size : 0,
             folderId: dirId
         })
         .then((f) => {
@@ -35,7 +35,7 @@ ipcRenderer.on('zip-done', (e, row) => {
 });
 
 ipcRenderer.on('loaded', (e, d) => {
-    var name = nameFormat(d.name.toLocaleLowerCase().replace(/ \[digital\]| \[chinese\]| \[Decensored\]/ig, ""), 3);
+    var name = nameFormat(d.name.toLocaleLowerCase().replace(/ \[digital\]| \[chinese\]| \[Decensored\]|/ig, ""), 3);
     d.name = nameFormat(d.name, 3);
     db.File.findOne({
         where: {

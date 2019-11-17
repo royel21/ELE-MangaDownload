@@ -36,12 +36,21 @@ loadFromClipBoard = () => {
 
         if (clipboard.availableFormats()[1] === "text/html") {
             var $clipContent = $(clipboard.readHTML());
-            $clipContent.find('a').each((i, el) => {
-                var link = el.href;
-                if (link.includes('https://nhentai')) {
-                    DManager.addDownload(link);
+        
+            if ($clipContent.length === 1) {
+                var link = $clipContent[0];
+                if (link.href && link.href.includes('https://nhentai')) {
+                    DManager.addDownload(link.href);
                 }
-            });
+            } else {
+    
+                $clipContent.find('a').each((i, el) => {
+                    var link = el.href;
+                    if (link && link.includes('https://nhentai')) {
+                        DManager.addDownload(link);
+                    }
+                });
+            }
         } else {
             if (recent.includes('https://nhentai')) {
                 DManager.addDownload(recent);
@@ -63,15 +72,18 @@ $('#d-m-clip').change((e) => {
 });
 
 openDir = () => {
-    var dir = dialog.showOpenDialog(mainWindow, {
+    dialog.showOpenDialog(mainWindow, {
         title: "Select the folder",
         properties: ['openDirectory', 'createDirectory', 'showHiddenFiles'],
         defaultPath: DManager.dir
+    }).then(result=>{
+        if (result.filePaths[0]) {
+            DManager.setDirectory(result.filePaths[0]);
+            $dwPath.find('span').text(result.filePaths[0]);
+        }
+    }).catch(err=>{
+        console.log(err);
     });
-    if (dir) {
-        DManager.setDirectory(dir);
-        $dwPath.find('span').text(dir);
-    }
 };
 
 
@@ -119,7 +131,7 @@ $(() => {
 
 $(document.body).keydown((e) => {
     var $row = $(event.target.closest('tr'));
-    console.log(event.keyCode);
+  
     if ($row[0] != undefined) {
         switch (event.keyCode) {
 
@@ -132,7 +144,8 @@ $(document.body).keydown((e) => {
                     }
                     break;
                 }
-
+                    
+                
             case 40:
                 {
                     if ($row.next()[0] == undefined) {
@@ -153,12 +166,17 @@ $(document.body).keydown((e) => {
 });
 
 $('#d-clean-complete').click(e => {
-    var $tbCopy = $('tbody').clone();
+    // var $tbCopy = $('tbody').clone();
+    var toDelete = [];
     for (var d of DManager.getCompleted()) {
         DManager.delete(d);
-        $tbCopy.find('#d-' + d.id).remove();
+        $('tbody').find('#d-' + d.id).hide();
+        toDelete.push('#d-' + d.id);
     }
-    $('tbody').empty().append($tbCopy.children());
+    // $('tbody').empty().append($tbCopy.children());
+    for(let id of toDelete){
+        $('tbody').find(id).remove();
+    }
     $('#file-pending').text((DManager.getTotal() - DManager.getPending()) + '/' + DManager.getTotal());
 });
 
@@ -169,4 +187,24 @@ $('#check-all').change((e) => {
 
 $('#clean-notify').click((e) => {
     $('#notifications .noty').remove();
+});
+
+$("#filter").on("keydown", e =>{
+    let val = e.target.value;
+    if(val.length > 1){
+         $("tbody tr").each((i, el)=>{
+            if(!el.textContent.toUpperCase().includes(val.toUpperCase())){
+                el.classList.add("d-none");
+            }else{
+                el.classList.remove("d-none");
+            }
+         });
+    }else{
+        $("tbody tr").removeClass("d-none");
+    }
+});
+
+$("#btn-clear").click(()=>{
+    $("tbody tr").removeClass("d-none");
+    $("#filter").val("");
 });

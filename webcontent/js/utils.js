@@ -119,10 +119,13 @@ function nameFormat(name, padding = 3) {
     }else{
         temp = name;
     }
-    
     var elem = document.createElement('textarea');
     elem.innerHTML = temp;
-    return elem.value.replace(/[\\|?|<|>|*|:|"|/|,]/ig, '').replace("  ", " ");
+    let strTemp = elem.value.replace(/[\\|?|<|>|*|:|"|/|,]/ig, '').replace("  ", " ").replace("\t","");
+    
+    if(strTemp[strTemp.length-1] == ".") strTemp = strTemp.substr(0, strTemp.length-2);
+    console.log(strTemp);
+    return strTemp;
 }
 
 module.exports = {

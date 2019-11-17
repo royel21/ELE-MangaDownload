@@ -6,7 +6,7 @@ const {
 } = electron;
 
 let os = require('os')
-const fs = require('fs')
+const fs = require('fs-extra')
 const path = require('path')
 
 // this should be placed at top of main.js to handle setup events quickly
@@ -31,9 +31,13 @@ function createWin() {
         show: false,
         transparent: true,
         frame: false,
+        webPreferences: { nodeIntegration: true }
     });
+
     win.setMenu(null);
+
     win.loadURL('file://' + __dirname + '/index.html');
+
     win.on('ready-to-show', () => {
         win.show();
     });
@@ -73,6 +77,7 @@ ipcMain.on('log', (event, msg) => {
 });
 
 app.commandLine.appendSwitch("--disable-http-cache");
+
 app.on('close', () => {
     win = null;
 });

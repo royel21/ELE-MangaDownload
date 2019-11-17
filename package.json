@@ -18,19 +18,18 @@
   "author": "R-C",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^3.0.3",
-    "electron-rebuild": "^1.8.2",
-    "electron-reload": "^1.2.5",
-    "node-gyp": "^3.8.0"
+    "electron": "^7.1.1",
+    "electron-rebuild": "^1.8.6",
+    "node-gyp": "^6.0.1"
   },
   "dependencies": {
     "@types/fs-extra": "^5.0.4",
     "electron-squirrel-startup": "^1.0.0",
     "fs-extra": "^7.0.0",
-    "jquery": "^3.3.1",
-    "sequelize": "^4.39.0",
-    "sharp": "^0.20.8",
-    "sqlite3": "^4.0.2",
+    "jquery": "^3.4.1",
+    "sequelize": "^4.44.3",
+    "sharp": "^0.23.2",
+    "sqlite3": "^4.1.0",
     "win-explorer": "file:..\\local_modules\\win-explorer",
     "zip-local": "^0.3.4"
   }

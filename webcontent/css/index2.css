@@ -706,3 +706,29 @@ tbody tr:last-child:hover td:last-child{
     border-radius: 0 0 1em 0;
 }
 
+#filter-container{
+    position: relative;
+    width: 160px;
+}
+
+#filter{
+    top: 7px;
+    position: absolute;
+    width: 160px;
+    height: 29px;
+}
+
+#btn-clear{
+    display: none;
+    position: absolute;
+    top: -2px;
+    right: -5px;
+    color: red;
+}
+
+#btn-clear .far{
+    font-size: 20px;
+}
+#filter:not(:placeholder-shown) + #btn-clear{
+    display: initial;
+}

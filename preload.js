@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         var g = reader.gallery;
         var d = {
             id: index,
-            name: g.title.english,
+            name: g.title.english.replace("\t",""),
             pages: g.num_pages,
             state: "Pending",
             url: img,

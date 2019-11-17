@@ -13,7 +13,7 @@ const win = app.getCurrentWindow();
 var local = localStorage;
 if (local.getItem('downloads-dir') === null) {
     local.setItem('downloads-dir', app.app.getPath('downloads'));
-    local.setItem('max-download', 2);
+    local.setItem('max-download', 3);
 }
 
 module.exports = class Downloads {
@@ -210,7 +210,10 @@ module.exports = class Downloads {
             var winLoadName = new BrowserWindow({
                 width: 1,
                 height: 1,
-                show: false
+                show: false,
+                webPreferences: {
+                    nodeIntegration: true
+                }
             });
             var zipper = path.resolve('./background/zip-file.html');
             winLoadName.loadURL('file://' + zipper);
