@@ -36,14 +36,14 @@ loadFromClipBoard = () => {
 
         if (clipboard.availableFormats()[1] === "text/html") {
             var $clipContent = $(clipboard.readHTML());
-        
+
             if ($clipContent.length === 1) {
                 var link = $clipContent[0];
                 if (link.href && link.href.includes('https://nhentai')) {
                     DManager.addDownload(link.href);
                 }
             } else {
-    
+
                 $clipContent.find('a').each((i, el) => {
                     var link = el.href;
                     if (link && link.includes('https://nhentai')) {
@@ -76,12 +76,12 @@ openDir = () => {
         title: "Select the folder",
         properties: ['openDirectory', 'createDirectory', 'showHiddenFiles'],
         defaultPath: DManager.dir
-    }).then(result=>{
+    }).then(result => {
         if (result.filePaths[0]) {
             DManager.setDirectory(result.filePaths[0]);
             $dwPath.find('span').text(result.filePaths[0]);
         }
-    }).catch(err=>{
+    }).catch(err => {
         console.log(err);
     });
 };
@@ -122,8 +122,8 @@ $(() => {
                 Name: DManager.dir
             }
         }).then(folder => {
-            if(folder)
-            dirId = folder[0].Id;
+            if (folder)
+                dirId = folder[0].Id;
         })
     });
     updateOnlineStatus();
@@ -131,7 +131,7 @@ $(() => {
 
 $(document.body).keydown((e) => {
     var $row = $(event.target.closest('tr'));
-  
+
     if ($row[0] != undefined) {
         switch (event.keyCode) {
 
@@ -144,8 +144,8 @@ $(document.body).keydown((e) => {
                     }
                     break;
                 }
-                    
-                
+
+
             case 40:
                 {
                     if ($row.next()[0] == undefined) {
@@ -174,7 +174,7 @@ $('#d-clean-complete').click(e => {
         toDelete.push('#d-' + d.id);
     }
     // $('tbody').empty().append($tbCopy.children());
-    for(let id of toDelete){
+    for (let id of toDelete) {
         $('tbody').find(id).remove();
     }
     $('#file-pending').text((DManager.getTotal() - DManager.getPending()) + '/' + DManager.getTotal());
@@ -188,23 +188,34 @@ $('#check-all').change((e) => {
 $('#clean-notify').click((e) => {
     $('#notifications .noty').remove();
 });
-
-$("#filter").on("keydown", e =>{
-    let val = e.target.value;
-    if(val.length > 1){
-         $("tbody tr").each((i, el)=>{
-            if(!el.textContent.toUpperCase().includes(val.toUpperCase())){
+var filterTable = (val) => {
+    if (val.length > 1) {
+        $("tbody tr").each((i, el) => {
+            if (!el.textContent.toUpperCase().includes(val.toUpperCase())) {
                 el.classList.add("d-none");
-            }else{
+            } else {
                 el.classList.remove("d-none");
             }
-         });
-    }else{
+        });
+    } else {
         $("tbody tr").removeClass("d-none");
+    }
+}
+$("#filter").on("keydown", e => {
+    let val = e.target.value;
+    filterTable(val);
+});
+
+$("#filter").on('mousedown', (e) => {
+    let val = clipboard.readText();
+    if(val){
+        e.target.value = val.trimRight();
+        filterTable(val.trimRight());
     }
 });
 
-$("#btn-clear").click(()=>{
+
+$("#btn-clear").click(() => {
     $("tbody tr").removeClass("d-none");
     $("#filter").val("");
 });

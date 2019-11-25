@@ -1,81 +1,127 @@
 var pageList = new Array();
 var currentPage = 1;
-var numberPerPage = 1000;
+var numberPerPage = 500;
 var numberOfPages = 0;
 var list = []
-var $list_modal = $('#modal-file-list');
-const { FormattBytes } = require('./webcontent/js/utils');
+var $list_modal = $('#modal-list-file');
+var totalFiles = 0;
 
-function getNumberOfPages() {
-    return Math.ceil(list.length / numberPerPage);
-}
-
-loadPage = (e) => {
-    currentPage = e.target.id.replace('page-', '');
-    loadList();
-}
-
-function loadList() {
-    var begin = ((currentPage - 1) * numberPerPage);
-    var end = begin + numberPerPage;
-
-    pageList = list.slice(begin, end);
-    drawList();
-}
-
-function drawList() {
-    var $the_ul = $('#file-list');
-    var $new_ul = $the_ul.empty().clone();
-    $new_ul.append(`<li id="scan-list-empty" class="list-group-item">Empty</li>`);
-    for (let value of pageList) {
-        $new_ul.append(`<li class="list-group-item popup-msg" data-title="${value.FileName} ${FormattBytes(value.Size)}"><span>${value.FileName}</span></li>`)
+$('#prev-list-page').click((e) => {
+    if (currentPage > 1) {
+        loadNewPage(--currentPage);
     }
-    $('#file-list').replaceWith($new_ul);
-    $('#file-found').html(list.length);
+});
 
-    $('#pagination-list').empty()
-    numberOfPages = getNumberOfPages();
-
-    if (numberOfPages > 1) {
-        var page = 0;
-        while (page < numberOfPages) {
-            $('#pagination-list').append($(`<li class="page-item"><span id="page-${++page}" class="page-link">${page}</span></li>`));
-        }
-        $('#page-' + currentPage).parent().addClass('active');
+$('#next-list-page').click((e) => {
+    if (currentPage < numberOfPages) {
+        loadNewPage(++currentPage);
     }
-}
+});
 
-
-$('#file-list-show').click(() => {
+$('.list-file-show').click((event) => {
     if ($list_modal[0].style.display != "flex") {
-        list = filesList;
-        $('#file-list-content').css({ height: $list_modal.height() - 95 });
+        var $toolbar = $(event.target).closest('#viewer .footer');
+
+        if ($toolbar[0] != undefined) {
+            $('#modal-list-file').appendTo($('#viewer .footer'));
+        } else {
+            $('#modal-list-file').appendTo('body');
+        }
         $list_modal.fadeIn('slow', () => {
-            $list_modal.css({ display: 'flex', zIndex: zIndex++ });
-            loadList();
+            $list_modal.css({ display: 'flex' });
+            $('.list-file-content').css({ height: $('#modal-list-file').height() - 93 });
+            loadNewPage(0);
         });
     }
 });
 
-$('#file-list-hide').click(() => {
+$('#list-file-hide').click(() => {
     $list_modal.fadeOut('slow');
-    $list_modal.css({ zIndex: zIndex-- });
 });
 
 $('#files-filter').keyup((e) => {
-    currentPage = 1;
-    var val = $('#files-filter').val().toLowerCase();
-    if (val.length > 2) {
-        list = filesList.filter((f) => {
-            return f.FileName.toLocaleLowerCase().includes(val)
-        });
-        loadList();
-    } else {
-        if (list.length != filesList.length) {
-            list = filesList
-            loadList();
-        }
+    loadNewPage(1);
+});
+
+const $modalScnList = $('#modal-scan-folder');
+
+$('#scan-list-hide').click(() => {
+    $modalScnList.fadeOut('slow');
+});
+
+$('#scan-list-show').click(() => {
+    if ($modalScnList[0].style.display != "block") {
+        $modalScnList.fadeIn('slow');
     }
 });
 
-$('#pagination-list').on('click', '.page-link', loadPage);
+$('#list-add-folder').click(() => {
+    dialog.showOpenDialog(mainWindow, {
+        title: "Select folder",
+        properties: ['openDirectory']
+    }).then(dir => {
+        if (dir) {
+            if (scanList.find((f) => { return f.dir == dir[0] }) == undefined) {
+                id = 0;
+                if (scanList.length > 0) id = scanList.last.id + 1;
+                scanList.push({ id, dir: dir[0] });
+                scanOneDir(dir[0]).then(() => {
+                    $scanList.append(template('./template/folder-row.html', { id, dir: dir[0] }));
+                })
+            }
+        }
+    }); //end dialog
+});
+
+$('#current-page').on('click', function () {
+
+    if (numberOfPages !== 1) {
+        this.textContent = "";
+        var $input = $(`<input type="number" value=${currentPage}
+                         style="width:70px; padding:0; font-size:15px; color: black;" min=1 
+                         max=${numberOfPages}>`)
+            .appendTo($(this)).focus();
+
+        $input.click((event) => {
+            event.stopPropagation();
+        });
+
+        $input.on('keyup', (event) => {
+            if (event.keyCode === 13) {
+                currentPage = parseInt($input.val());
+
+                if (currentPage > numberOfPages) {
+                    currentPage = numberOfPages;
+                }
+                event.stopPropagation();
+                event.preventDefault();
+                $input = null;
+                loadNewPage(currentPage);
+            }
+        });
+        $input.focus();
+    }
+});
+
+$('#list-file-content').on('click', '#delete-list', (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    var li = event.target.closest('li').dataset;
+    var elToRemove = event.target.closest('li');
+    var file = path.join(li.dir, li.title);
+    if (fs.existsSync(file)) {
+        deleteFile(file, false).then(resp => {
+            if (resp == 0) {
+                $(elToRemove).fadeOut('slow', () => {
+                    $(elToRemove).remove();
+                });
+            }
+        });
+    }
+});
+
+$('#list-file-content').on('dblclick', '#delete-list', (event) => {
+    event.stopPropagation();
+    event.preventDefault();
+});
+

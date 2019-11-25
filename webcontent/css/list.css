@@ -1,0 +1,119 @@
+#search-list{
+    display: none;
+    position: fixed;
+    top: 45px;
+    right: 1%;
+    height: calc(100% - 91px);
+    width: 98%;
+    text-align: left;
+    background-color: sienna;
+    color: white;
+    padding: 10px;
+    border: 1px black solid;
+    border-radius: 0.25rem;
+}
+
+#list-container{
+    overflow: auto;
+    height: calc(100% - 40px);
+}
+
+#files-search{
+    width: 250px;
+}
+
+#search-controls{
+    height: 41px;
+    border-bottom: 1px white solid;
+    margin-bottom: 3px;
+}
+
+#show-search-box:checked + div{
+    display: initial;
+}
+
+#found-list{
+    min-height: 100%;   
+    max-width: 99%;
+}
+
+#found-list li{
+    position: relative;
+    padding: 11px;
+    margin-left: 10px;
+    border-bottom: 1px black solid;
+    cursor: pointer;
+}
+
+.file-name{
+    padding-left: 25px;
+    pointer-event: none;
+}
+
+#found-list li .del-file{
+    position: absolute;
+    top: 8px;
+    left: 0px;
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    background-color: aliceblue;
+    border-radius: 50%;
+    font-size: 18px;
+}
+
+#found-list .fa-trash-alt{
+    position: absolute;
+    top: 5px;
+    left: 6px;
+    color: rgba(220,0,0, 1);
+}
+
+#found-list li:hover{
+    background-color: rgba(0,0,0,0.1);
+}
+#found-list li:active{
+     background-color: rgba(0,0,0,0.4);
+}
+
+#btn-clear-search{
+    top: 18px;
+    left: 184px;
+}
+#btn-close-list{
+    position: absolute;
+    top: -2px;
+    right: 2px;
+}
+#search-controls #files-search,
+#search-controls .input-group{
+    display: inline-block;
+    width: initial;
+    max-height: 30px;
+}
+
+#search-controls span{
+    height: initial;
+    line-height: initial;
+    padding: 0;
+    margin: 0;
+    font-size: 18px;
+    width: 45px;
+}
+#search-controls #search-total{
+    font-size: 19px;
+    padding: 2px 6px;
+    height: 37px;
+    line-height: 1.75;
+    width: initial;
+}
+#current-page input{
+    width: 47px;
+    padding-left: 4px;
+    font-size: 15px;
+    color: black;
+    outline: none;
+    border-radius: 5px;
+    border: 1px transparent;
+}
+

@@ -9,12 +9,14 @@ label {
 
 body, html {
     background: rgba(0, 0, 0, 0);
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    min-width: 100%;
     height: 100%;
-    overflow-y: hidden;
+    min-height: 100%;
+    overflow-y: auto;
+    border-radius: 1em;
 }
 
 body {
@@ -26,13 +28,16 @@ body {
     background-color: #14243d;
     background: radial-gradient(ellipse at center, #14243d 0%, #030611 100%);
     min-height: 100%;
-    border-radius: 1.1em;
+    height: 100%;
+    padding-top: 43px;
+    padding-bottom: 40px;
 }
 
 #content {
     min-height: 100%;
     overflow-y: auto;
-    padding: 15px;
+    height: 100%;
+    padding: 5px 10px;
 }
 
 .d-controls {
@@ -69,6 +74,8 @@ body {
 #win-control {
     flex-shrink: 1;
 }
+
+#clean-notify:hover,
 #win-control span:hover,
 #d-control label:hover,
 #d-control span:hover{
@@ -83,35 +90,43 @@ body {
     border-radius: 0 0.6em 0 0;
 }
 
+#d-clean-complete .fa-trash-alt{
+    position: relative;
+}
+
+#d-clean-complete .fa-broom{
+    position: absolute;
+    top: 3px;
+    left: -2px;
+    color: midnightblue;
+}
+
 #win-control .btn-sys-close:hover {
     background-color: red;
 }
-
-#file-list-hide i:active,
-#scan-list-show .fa-clipboard:active,
-#file-list-show i:active,
-.d-controls i:active, 
-.d-controls i:active, #d-delete:active, 
-#modal-scan-folder span i:active {
+#clean-notify:active,
+table tr .fa-trash-alt,
+.d-controls span:active i,
+.d-controls label:active i{
     transform: translateY(5px)
 }
-
-#d-delete:hover, 
-#scan-list-show .fa-clipboard:hover, 
-#file-list-show i:hover,
-#file-list-hide i:hover,
-#modal-body span i:hover, 
+#d-path:hover,
+footer .round-check label:hover,
+table tr .fa-trash-alt:hover,
 .d-controls span:hover, 
-#modal-body span i:hover, 
 .fa-trash-alt:hover {
     text-shadow: 0 0 5px #fff;
+    cursor: pointer;
+}
+footer .round-check label:hover span:first-child,
+table .round-check label:hover span{
+    box-shadow: 0 0 10px #fff;
     cursor: pointer;
 }
 
 #table-container {
     border-radius: 1em;
     min-width: 670px;
-    margin: 35px auto;
 }
 
 table {
@@ -130,7 +145,7 @@ table {
 
 thead {
     background-color: #bbb;
-    background-image: gradient(linear, left top, left bottom, color-stop(0, #d6d6d6), color-stop(0.4, #c0c0c0), color-stop(1, #a4a4a4));
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #d6d6d6), color-stop(0.4, #c0c0c0), color-stop(1, #a4a4a4));
     border-radius: 1em 1em 1em 1em;
 }
 
@@ -232,19 +247,16 @@ tbody .fas, tbody .far, tbody .fa {
 /*************************Scrollbar Style********************************/
 
 ::-webkit-scrollbar {
-    width: 25px;
+    width: 20px;
 }
 
 ::-webkit-scrollbar-track {
-    margin-left: 15px;
-    margin-top: 45px;
-    margin-bottom: 40px;
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
 ::-webkit-scrollbar-thumb {
     border-radius: 5px;
-    background-color: rgba(12, 45, 84, 0.82);
+    background-color: rgba(20, 210, 230, 0.82);
     box-shadow: inset 0 0 6px rgba(15, 111, 228, 0.82);
 }
 
@@ -268,22 +280,43 @@ footer {
 
 footer span {
     align-self: center;
-    margin: 0 5px
+    margin: 0 5px;
 }
 
-#download-path {
+#d-path {
     flex-grow: 1;
     align-self: center;
     cursor: pointer;
+    margin-left: 5px;
 }
 
-#download-path:hover {
+#d-path span{
+    margin: 0;
+}
+#d-path span:hover {
     text-decoration-line: underline;
 }
 
-#file-pending {
+#d-path .fa-folder {
+    position:relative;
+    font-size: 27px;
+}
+
+#d-path .fa-arrow-down {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    font-size: 18px;
+    color: brown;
+}
+
+#d-files-count{
+    display: inline-block;
+    background-color: wheat;
+    border-radius: 5px;
+    padding: 2px 4px;
+    color: black;
     flex-shrink: 1;
-    color: burlywood;
 }
 
 /****************************************************/
@@ -342,7 +375,7 @@ footer span {
 }
 
 .round-check input[type=checkbox]:checked+label:after {
-    background: #26ca28;
+    background: honeydew;
 }
 #download .round-check label{
     width: 44px;
@@ -415,13 +448,6 @@ tbody tr td:first-child {
     padding: 10px;
 }
 
-#scan-list-empty {
-    display: none;
-}
-
-#scan-list-empty:only-child {
-    display: block;
-}
 
 .list-group li .fa-trash-alt {
     font-size: 20px;
@@ -510,7 +536,7 @@ tbody tr td:first-child {
 }
 
 .input-group-text{
-    padding: 0.375rem 0 0.375rem 0.6rem
+    padding: 0.375rem 0 0.375rem 0.6rem;
 }
 
 .fa-search{
@@ -527,33 +553,48 @@ tbody tr td:first-child {
 
 #notify-panel
 {
-    display: flex;
-    flex-direction: column-reverse;
     background-color: transparent;
     position: fixed;
-    top: 32px;
+    top: 48px;
     bottom: 40px;
-    width: 205px;
-    right: 5px;
+    width: 220px;
+    right: 7px;
     opacity: 1;
     z-index: 999;
     pointer-events: none;
+}
+#notifications{
+    display: flex;
+    flex-direction: column-reverse;
+    background-color: transparent;
+    width: 100%;
+    min-height: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#notifications::-webkit-scrollbar{
+    width: 0px;
 }
 
 .noty{
     flex-shrink: 0;
     display: none;
     width: 200px;
-    height: 100px;
+    min-height: 100px;
     margin: 2px;
     border-radius: 5px;
-    background-color: beige;
     cursor: pointer;
     font-size: 11px;
     padding: 5px;
     pointer-events: auto;
     
 }
+.noty:hover{
+    box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
 .noty-title
 {
     text-align: center;
@@ -566,11 +607,28 @@ tbody tr td:first-child {
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: left;
-    margin: 2px auto;
-    max-height: 67px;
+    padding: 2px auto;
     pointer-events: none
 }
 
+
+#clean-notify{
+    display: inline-block;
+    text-align: center;
+    position: fixed;
+    bottom: 44px;
+    right: 5px;
+    font-size: 25px;
+    height: 40px;
+    width: 40px;
+    color: red;
+    border-radius: 50%;
+    pointer-events: all;
+}
+
+#clean-notify:only-child{
+    display: none;
+}
 
 #popup{
     display: none;
@@ -602,7 +660,7 @@ tbody tr td:first-child {
 
 #online-status{
     position: absolute;
-    left: calc(100%/2);
+    right: 140px;
     font-size: 25px;
     color: #007bff;
     display: inline-block;
@@ -627,4 +685,52 @@ tbody tr td:first-child {
     width: 100%;
     background-color: red;
     transform: rotatez(45deg);
+}
+
+tbody tr:hover{
+    background-color: rgba(82,88,94,0.6)!important;  
+}
+
+tbody tr:focus{
+    outline: none;
+    background-color: rgba(0,0,0,0.7)!important;
+}
+
+tbody tr:last-child:focus td:first-child,
+tbody tr:last-child:hover td:first-child{
+    border-radius: 0 0 0 1em;
+}
+
+tbody tr:last-child:focus td:last-child,
+tbody tr:last-child:hover td:last-child{
+    border-radius: 0 0 1em 0;
+}
+
+#filter-container{
+    position: relative;
+    width: 160px;
+    top: 1px;
+    left: 10px;
+}
+
+#filter{
+    top: 7px;
+    position: absolute;
+    width: 160px;
+    height: 29px;
+}
+
+input[type="text"] + span{
+    display: none;
+    position: absolute;
+    top: -2px;
+    right: -5px;
+    color: red;
+}
+
+input[type="text"] + span .far{
+    font-size: 20px;
+}
+input[type="text"]:not(:placeholder-shown) + span{
+    display: initial;
 }

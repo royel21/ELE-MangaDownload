@@ -108,6 +108,7 @@ Notify = (data) => {
 
 function nameFormat(name, padding = 3) {
     var str = name;
+
     var res1 = name.split(/\d+/g);
     var res2 = str.match(/\d+/g);
     var temp = "";
@@ -121,11 +122,9 @@ function nameFormat(name, padding = 3) {
     }
     var elem = document.createElement('textarea');
     elem.innerHTML = temp;
-    let strTemp = elem.value.replace(/[\\|?|<|>|*|:|"|/|,]/ig, '').replace("  ", " ").replace("\t","");
+    let strTemp = elem.value.replace(/[\\|?|<|>|*|:|"|/|,|\t]/ig, '').replace("  ", " ");
     
-    if(strTemp[strTemp.length-1] == ".") strTemp = strTemp.substr(0, strTemp.length-2);
-    console.log(strTemp);
-    return strTemp;
+    return strTemp.replace(/[.]/ig,"")
 }
 
 module.exports = {
