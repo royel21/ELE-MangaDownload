@@ -109,6 +109,7 @@ module.exports = class Downloads {
     setDirectory(dir) {
         if (dir) {
             localStorage.setItem('downloads-dir', dir);
+            this.dir = dir;
         }
     }
 

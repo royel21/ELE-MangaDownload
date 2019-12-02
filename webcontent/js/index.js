@@ -208,9 +208,11 @@ $("#filter").on("keydown", e => {
 
 $("#filter").on('mousedown', (e) => {
     let val = clipboard.readText();
-    if(val){
-        e.target.value = val.trimRight();
-        filterTable(val.trimRight());
+    if(e.which === 3){
+        if(val){
+            e.target.value = val.trimRight();
+            filterTable(val.trimRight());
+        }
     }
 });
 

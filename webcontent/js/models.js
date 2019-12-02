@@ -7,7 +7,7 @@ var dbPath = path.join(os.homedir(), './.mangas-common/mangas.db');
 
 const Op = Sequelize.Op
 const db = new Sequelize('sqlite:./' + dbPath, {
-    logging: false,
+    logging: console.log,
     operatorsAliases: {
         $and: Op.and,
         $or: Op.or,
@@ -31,17 +31,16 @@ const Folder = db.define('folders', {
         unique: true,
         allowNull: false
     },
-    folderId:{
+    folderId: {
         type: Sequelize.INTEGER,
-        references:{
+        references: {
             model: "folders",
             key: "Id"
         }
     }
-},
-    {
-        timestamps: false
-    })
+}, {
+    timestamps: false
+})
 
 const File = db.define('files', {
     Id: {
@@ -57,20 +56,19 @@ const File = db.define('files', {
         type: Sequelize.INTEGER(5).UNSIGNED,
         defaultValue: 0
     },
-    Total:{
+    Total: {
         type: Sequelize.INTEGER(5).UNSIGNED,
         defaultValue: 0
     },
     Size: {
         type: Sequelize.INTEGER.UNSIGNED
     }
-},
-    {
-        timestamps: false
-    });
+}, {
+    timestamps: false
+});
 
-File.findByName = (file) =>{
-    return File.findOne({where:{Name: file.Name}, include:{model: Folder}});
+File.findByName = (file) => {
+    return File.findOne({ where: { Name: file.Name }, include: { model: Folder } });
 }
 
 
@@ -85,8 +83,8 @@ const FavoriteFile = db.define('favoritefiles', {
         unique: true
     }
 }, {
-        timestamps: false
-    });
+    timestamps: false
+});
 
 File.belongsTo(Folder);
 Folder.hasMany(File);
@@ -94,7 +92,7 @@ Folder.hasMany(Folder);
 FavoriteFile.hasMany(File);
 FavoriteFile.hasMany(Folder);
 
-init = async () => {
+init = async() => {
     if (!fs.existsSync(dbPath)) {
         await db.sync({ logging: true });
         await FavoriteFile.findOrCreate({ where: { Name: "Folders" } });

@@ -16,6 +16,16 @@ $('#d-search').click(() => {
             loadNewPage();
         $searchList.fadeIn(300);
     }
+//    ['Name', db.db.literal("REPLACE(Name, '[', '0') as N")]
+//     db.File.findAndCountAll({
+//         order: db.db.col('N'),
+//         attributes: { include: [[db.db.fn('REPLACE', db.db.col('Name'), '[', '0'), 'N']] },
+//         where:{ folderId: 22}
+//     }).then(items=>{
+//         console.log(items)
+//          for(let item of items.rows)
+//             console.log(item.Name);
+//     }).catch(err=>{ console.log(err) });
 });
 
 $('#btn-close-list').click(() => {
@@ -27,9 +37,9 @@ $('#search').on('input', (e) => {
 });
 
 $('#search').on('mousedown', (e) => {
-    if(e.which === 3){
+    if (e.which === 3) {
         let val = clipboard.readText();
-        if(val){
+        if (val) {
             e.target.value = val.trimRight();
             loadNewPage();
         }
@@ -40,7 +50,8 @@ var loadNewPage = (page = 1) => {
     var val = $('#search').val().toLowerCase();
     var begin = ((page - 1) * numberPerPage);
     db.File.findAndCountAll({
-        order: ['Name'],
+        order: db.db.col('N'),
+        attributes: { include: [[db.db.fn('REPLACE', db.db.col('files.Name'), '[', '0'), 'N']] },
         offset: begin, limit: numberPerPage,
         where: { Name: { [db.Op.like]: "%" + val + "%" } },
         include: { model: db.Folder }
@@ -49,7 +60,7 @@ var loadNewPage = (page = 1) => {
         numberOfPages = Math.ceil(files.count / numberPerPage);
         $('#search-total').html((list.length + begin) + " / " + files.count);
         loadList();
-    });
+    }).catch(err=>{ console.log(err) });
 }
 
 var loadList = () => {
