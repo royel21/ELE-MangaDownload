@@ -22,9 +22,9 @@ module.exports = class Download {
     async startDownload() {
         var fromPage = 1;
         if (!fs.existsSync(this.dir)) {
-            try{
+            try {
                 fs.mkdirsSync(this.dir);
-            }catch(err){
+            } catch (err) {
                 console.log(err, this.dir)
             }
         } else {
@@ -55,7 +55,7 @@ module.exports = class Download {
                 new Promise((resolve, reject) => {
 
                     var d = downloads.shift();
-                    var req = http.request(d.url, function (response) {
+                    var req = http.request(d.url, function(response) {
                         if (response.statusCode === 404) {
                             d.url = d.url.slice(0, -3) + "png"
                             downloads.unshift(d);
@@ -63,13 +63,14 @@ module.exports = class Download {
                             return resolve('done');
                         }
                         var data = [];
-                        response.on('data', function (chunk) {
+                        response.on('data', function(chunk) {
                             data.push(chunk);
                         });
-                        response.on('end', function () {
+                        response.on('end', function() {
                             var img = new Image();
-                            img.src = 'data:image/jpeg;base64,' + Buffer.concat(data).toString('base64');
-                            img.onload = function () {
+                            img.src = 'data:image/jpeg;base64,' + Buffer.concat(data).toString(
+                                'base64');
+                            img.onload = function() {
                                 if (img.width < 1100 || img.height > 3000) {
                                     sharp(Buffer.concat(data))
                                         .jpeg({
@@ -88,21 +89,22 @@ module.exports = class Download {
                                             dthis.dcount--;
                                         });
                                 }
-                                
+
                                 if (typeof dthis.cb === "function")
-                                    dthis.cb('Update', dthis.data.pages - downloads.length, dthis.data);
+                                    dthis.cb('Update', dthis.data.pages - downloads.length,
+                                        dthis.data);
                             }
                         });
                     });
 
-                    req.on('socket', function (socket) {
+                    req.on('socket', function(socket) {
                         socket.setTimeout(20000);
-                        socket.on('timeout', function () {
+                        socket.on('timeout', function() {
                             req.abort();
                         });
                     });
 
-                    req.on('error', function (err) {
+                    req.on('error', function(err) {
                         downloads.unshift(d);
                         dthis.dcount--;
                         console.log(err)

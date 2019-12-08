@@ -221,3 +221,16 @@ $("#btn-clear").click(() => {
     $("tbody tr").removeClass("d-none");
     $("#filter").val("");
 });
+
+
+$(window).on('keydown', (e) => {
+    console.log("test")
+    switch (e.keyCode) {
+
+        case 123:
+            {
+                mainWindow.toggleDevTools();
+                break;
+            }
+    }
+});

@@ -1,4 +1,5 @@
-const shell = require('child_process');
+const { shell } = require('electron')
+
 const fs = require('fs-extra')
 
 var $searchList = $('#search-list');
@@ -16,16 +17,6 @@ $('#d-search').click(() => {
             loadNewPage();
         $searchList.fadeIn(300);
     }
-//    ['Name', db.db.literal("REPLACE(Name, '[', '0') as N")]
-//     db.File.findAndCountAll({
-//         order: db.db.col('N'),
-//         attributes: { include: [[db.db.fn('REPLACE', db.db.col('Name'), '[', '0'), 'N']] },
-//         where:{ folderId: 22}
-//     }).then(items=>{
-//         console.log(items)
-//          for(let item of items.rows)
-//             console.log(item.Name);
-//     }).catch(err=>{ console.log(err) });
 });
 
 $('#btn-close-list').click(() => {
@@ -51,22 +42,36 @@ var loadNewPage = (page = 1) => {
     var begin = ((page - 1) * numberPerPage);
     db.File.findAndCountAll({
         order: db.db.col('N'),
-        attributes: { include: [[db.db.fn('REPLACE', db.db.col('files.Name'), '[', '0'), 'N']] },
-        offset: begin, limit: numberPerPage,
-        where: { Name: { [db.Op.like]: "%" + val + "%" } },
+        attributes: {
+            include: [
+                [db.db.fn('REPLACE', db.db.col('files.Name'), '[', '0'), 'N']
+            ]
+        },
+        offset: begin,
+        limit: numberPerPage,
+        where: {
+            Name: {
+                [db.Op.like]: "%" + val + "%"
+            }
+        },
         include: { model: db.Folder }
     }).then(files => {
         list = files.rows;
         numberOfPages = Math.ceil(files.count / numberPerPage);
         $('#search-total').html((list.length + begin) + " / " + files.count);
         loadList();
-    }).catch(err=>{ console.log(err) });
+    }).catch(err => { console.log(err) });
 }
 
 var loadList = () => {
     var $new_ul = $('#found-list').empty().clone();
     for (let value of list) {
-        let li = `<li id="${value.Id}" class="popup-msg" data-title=${value.folder.Name} ><span class="del-file"><i class="fas fa-trash-alt"/></span><div class="file-name">${value.Name}</div></li>`;
+        let li = `<li id="${value.Id}" class="popup-msg" data-title=${value.folder.Name}>
+                        <span class="del-file">
+                            <i class="fas fa-trash-alt"/>
+                        </span>
+                        <div class="file-name">${value.Name}</div>
+                  </li>`;
         $new_ul.append(li);
     }
     $('#found-list').replaceWith($new_ul);
@@ -85,7 +90,7 @@ $('#next-list-page').click((e) => {
     }
 });
 
-$('#current-page').on('click', function () {
+$('#current-page').on('click', function() {
 
     if (numberOfPages !== 1) {
         this.textContent = "";
@@ -120,19 +125,20 @@ $('#btn-clear-search').click(() => {
 })
 var processing = false;
 
-var processFile = async (e, cmd) => {
+var processFile = async(e, cmd) => {
     if (!processing) {
         processing = true;
 
         let li = e.target.closest('li');
         if (li) {
             let file = await db.File.findOne({
-                where: { Id: li.id }, include: { model: db.Folder }
+                where: { Id: li.id },
+                include: { model: db.Folder }
             });
             if (file) {
                 let filePath = path.join(file.folder.Name, file.Name);
                 if (cmd.includes('open')) {
-                    shell.execSync(`explorer "${filePath}"`);
+                    shell.showItemInFolder(filePath);
                 } else {
 
                     fs.removeSync(filePath);
@@ -150,7 +156,7 @@ $('#search-list').on('dblclick', 'li', (e) => {
     e.stopPropagation();
     processFile(e, "open").catch(err => {
         processing = false;
-        console.log(err);
+        console.log(err)
     });
 });
 

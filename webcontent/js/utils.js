@@ -147,7 +147,7 @@ function capitalize(str) {
                 temp.push(l.toUpperCase());
                 continue;
             }
-            temp.push(l);
+            temp.push(l.toLowerCase());
         }
         splitStr[i] = temp.join('');
     }
