@@ -40,6 +40,17 @@ $('#search').on('mousedown', (e) => {
 var loadNewPage = (page = 1) => {
     var val = $('#search').val().toLowerCase();
     var begin = ((page - 1) * numberPerPage);
+
+
+    let searchs = [];
+    for (let s of val.split('|')) {
+        searchs.push({
+            Name: {
+                [db.Op.like]: "%" + s + "%"
+            }
+        });
+    }
+
     db.File.findAndCountAll({
         order: db.db.col('N'),
         attributes: {
@@ -50,9 +61,7 @@ var loadNewPage = (page = 1) => {
         offset: begin,
         limit: numberPerPage,
         where: {
-            Name: {
-                [db.Op.like]: "%" + val + "%"
-            }
+            [db.Op.or]: searchs
         },
         include: { model: db.Folder }
     }).then(files => {
@@ -66,7 +75,8 @@ var loadNewPage = (page = 1) => {
 var loadList = () => {
     var $new_ul = $('#found-list').empty().clone();
     for (let value of list) {
-        let li = `<li id="${value.Id}" class="popup-msg" data-title=${value.folder.Name}>
+        let li =
+            `<li id="${value.Id}" class="popup-msg" data-title=${value.folder.Name}>
                         <span class="del-file">
                             <i class="fas fa-trash-alt"/>
                         </span>
