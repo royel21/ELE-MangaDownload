@@ -84,7 +84,7 @@ module.exports = class Download {
                                         .jpeg({
                                             quality: 75
                                         })
-                                        .resize(1100).toFile(d.toFile, (err, info) => {
+                                        .resize(950).toFile(d.toFile, (err, info) => {
                                             resolve('done');
                                             dthis.dcount--;
                                         });

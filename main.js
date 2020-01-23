@@ -60,8 +60,6 @@ function createWin() {
         }
     });
 
-    win.openDevTools();
-
     electron.powerMonitor.on('suspend', () => {
         win.webContents.send('suspend');
     });
@@ -86,7 +84,7 @@ app.on('ready', createWin);
 
 app.setPath('userData', path.join(os.homedir(), '.MangaDownloader'));
 
-var dbPath = path.join(os.homedir(),'./.mangas-common/');
+var dbPath = path.join(os.homedir(), './.mangas-common/');
 if (!fs.existsSync(dbPath)) {
     fs.mkdirsSync(dbPath);
 }
@@ -104,19 +102,19 @@ function handleSquirrelEvent(application) {
     const updateDotExe = path.resolve(path.join(rootAtomFolder, 'Update.exe'));
     const exeName = path.basename(process.execPath);
 
-    const spawn = function (command, args) {
+    const spawn = function(command, args) {
         let spawnedProcess, error;
 
         try {
             spawnedProcess = ChildProcess.spawn(command, args, {
                 detached: true
             });
-        } catch (error) { }
+        } catch (error) {}
 
         return spawnedProcess;
     };
 
-    const spawnUpdate = function (args) {
+    const spawnUpdate = function(args) {
         return spawn(updateDotExe, args);
     };
 

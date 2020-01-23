@@ -28,7 +28,7 @@ ipcRenderer.on('zip-done', (e, row) => {
             DManager.saveState();
             DManager.removeRunning(d.id);
             DManager.CreateDownload();
-        }).catch(function (err) {
+        }).catch(function(err) {
             console.log(err);
             console.log(d.name);
         });
@@ -37,6 +37,10 @@ ipcRenderer.on('zip-done', (e, row) => {
 ipcRenderer.on('loaded', (e, d) => {
     var name = nameFormat(d.name.toLocaleLowerCase().replace(/ \[digital\]| \[chinese\]| \[Decensored\]|/ig, ""), 3);
     d.name = nameFormat(d.name, 3);
+
+    let rowFound = Array.from(document.querySelectorAll('tbody tr td:nth-child(2)')).find((el) => el.textContent.includes(
+        name));
+
     db.File.findOne({
         where: {
             Name: {
@@ -45,7 +49,7 @@ ipcRenderer.on('loaded', (e, d) => {
         }
     }).then((f) => {
         try {
-            if (f == null) {
+            if (f == null && !rowFound) {
                 DManager.store.add(d);
                 DManager.addRow(d);
                 DManager.saveState();

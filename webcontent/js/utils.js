@@ -107,7 +107,7 @@ Notify = (data) => {
 }
 
 function nameFormat(name, padding = 3) {
-    var str = name.split('|')[0].trim();
+    var str = name.replace('/', '&').split('|')[0].trim();
 
     var res1 = str.split(/\d+/g);
     var res2 = str.match(/\d+/g);
@@ -130,7 +130,7 @@ function nameFormat(name, padding = 3) {
             break;
         }
     }
-    return capitalize(strTemp);
+    return capitalize(strTemp).replace('-00', '-0').replace('(C0', '(C');
 }
 
 function capitalize(str) {
@@ -152,7 +152,7 @@ function capitalize(str) {
         splitStr[i] = temp.join('');
     }
     // Directly return the joined string
-    return splitStr.join(' ');
+    return splitStr.join(' ').replace(/vol. |  /ig, 'Vol.');
 }
 
 module.exports = {

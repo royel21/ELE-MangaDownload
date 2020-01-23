@@ -224,7 +224,6 @@ $("#btn-clear").click(() => {
 
 
 $(window).on('keydown', (e) => {
-    console.log("test")
     switch (e.keyCode) {
 
         case 123:
