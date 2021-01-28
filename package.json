@@ -18,7 +18,7 @@
   "author": "R-C",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^7.1.1",
+    "electron": "^9.4.0",
     "electron-rebuild": "^1.8.6",
     "node-gyp": "^6.0.1"
   },
